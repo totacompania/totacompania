@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard,
   Theater,
@@ -26,15 +26,15 @@ const sidebarItems = [
   { href: '/admin', icon: LayoutDashboard, label: 'Tableau de bord' },
   { href: '/admin/spectacles', icon: Theater, label: 'Spectacles' },
   { href: '/admin/events', icon: Calendar, label: 'Agenda' },
-  { href: '/admin/equipe', icon: Users, label: 'Équipe' },
-  { href: '/admin/theater-groups', icon: GraduationCap, label: 'Groupes Théâtre' },
+  { href: '/admin/equipe', icon: Users, label: 'Equipe' },
+  { href: '/admin/theater-groups', icon: GraduationCap, label: 'Groupes Theatre' },
   { href: '/admin/interventions', icon: School, label: 'Interventions' },
   { href: '/admin/stages', icon: Sparkles, label: 'Stages Enfants' },
   { href: '/admin/partenaires', icon: Handshake, label: 'Partenaires' },
-  { href: '/admin/mediatheque', icon: ImageIcon, label: 'Photos & Médias' },
+  { href: '/admin/mediatheque', icon: ImageIcon, label: 'Photos & Medias' },
   { href: '/admin/messages', icon: Mail, label: 'Messages' },
   { href: '/admin/newsletter', icon: Newspaper, label: 'Newsletter' },
-  { href: '/admin/settings', icon: Settings, label: 'Paramètres' }
+  { href: '/admin/settings', icon: Settings, label: 'Parametres' }
 ];
 
 export default function AdminLayout({
@@ -43,10 +43,46 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    // Verifier l'authentification
+    if (typeof window !== 'undefined') {
+      const auth = sessionStorage.getItem('tota-admin-auth');
+      if (auth === 'true') {
+        setIsAuthenticated(true);
+      } else if (pathname !== '/admin/login') {
+        router.push('/admin/login');
+      }
+      setIsLoading(false);
+    }
+  }, [pathname, router]);
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('tota-admin-auth');
+    router.push('/admin/login');
+  };
+
+  // Page de login - pas de layout admin
   if (pathname === '/admin/login') {
     return <>{children}</>;
+  }
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#faf8f5] flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-[#844cfc] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  // Non authentifie - ne rien afficher (redirection en cours)
+  if (!isAuthenticated) {
+    return null;
   }
 
   return (
@@ -103,7 +139,7 @@ export default function AdminLayout({
           })}
         </nav>
 
-        <div className="p-4 border-t border-[#844cfc]/30 flex-shrink-0">
+        <div className="p-4 border-t border-[#844cfc]/30 flex-shrink-0 space-y-1">
           <Link
             href="/"
             className="flex items-center gap-3 px-3 py-2 text-[#dbcbff] hover:bg-[#844cfc]/30 hover:text-white transition-colors"
@@ -111,6 +147,13 @@ export default function AdminLayout({
             <LogOut className="w-5 h-5" />
             Retour au site
           </Link>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 px-3 py-2 text-red-400 hover:bg-red-500/20 hover:text-red-300 transition-colors w-full"
+          >
+            <LogOut className="w-5 h-5" />
+            Deconnexion
+          </button>
         </div>
       </aside>
 
@@ -141,10 +184,13 @@ export default function AdminLayout({
                   href="/admin/settings"
                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-[#dbcbff]/30"
                 >
-                  Paramètres
+                  Parametres
                 </Link>
-                <button className="w-full text-left px-4 py-2 text-sm text-[#f02822] hover:bg-[#dbcbff]/30">
-                  Déconnexion
+                <button 
+                  onClick={handleLogout}
+                  className="w-full text-left px-4 py-2 text-sm text-[#f02822] hover:bg-[#dbcbff]/30"
+                >
+                  Deconnexion
                 </button>
               </div>
             </div>
