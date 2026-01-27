@@ -79,3 +79,28 @@ export function getYouTubeEmbedUrl(url: string): string | null {
   }
   return null;
 }
+
+/**
+ * Get the full URL for an image, using CDN if configured
+ * @param path - The image path (e.g., '/uploads/2024/08/image.png')
+ * @returns The full URL with CDN prefix if available
+ */
+export function getImageUrl(path: string): string {
+  if (!path) return '';
+  
+  // If it's already an absolute URL, return as is
+  if (path.startsWith('http://') || path.startsWith('https://')) {
+    return path;
+  }
+  
+  const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL || "https://cdn.totacompania.fr";
+  
+  // If CDN is configured and path starts with /uploads, use CDN
+  if (cdnUrl && path.startsWith('/uploads/')) {
+    // Remove /uploads prefix as CDN root is the uploads folder
+    const relativePath = path.replace('/uploads/', '/');
+    return cdnUrl + relativePath;
+  }
+  
+  return path;
+}

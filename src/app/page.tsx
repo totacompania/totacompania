@@ -2,7 +2,8 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
+import Image from "next/image";
+import { getImageUrl } from "@/lib/utils";
 import Link from 'next/link';
 import Navigation from '@/components/layout/Navigation';
 import Footer from '@/components/layout/Footer';
@@ -24,8 +25,7 @@ interface Spectacle {
 
 const getImageSrc = (image?: string): string => {
   if (!image) return '/images/placeholder.jpg';
-  if (image.startsWith('/') || image.startsWith('http')) return image;
-  return `/media/${image}`;
+  return getImageUrl(image);
 };
 
 const getAudience = (spectacle: Spectacle): string | undefined => {

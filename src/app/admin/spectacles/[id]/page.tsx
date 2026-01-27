@@ -190,9 +190,7 @@ export default function EditSpectacle() {
   };
 
   const getImageSrc = (src: string) => {
-    if (!src) return '/placeholder.jpg';
-    if (src.startsWith('/') || src.startsWith('http')) return src;
-    return '/media/' + src;
+    return getImageUrl(src || "/placeholder.jpg");
   };
 
   // Group partenaires by category

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { getImageUrl } from '@/lib/utils';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import Navigation from '@/components/layout/Navigation';
@@ -44,9 +45,7 @@ const categoryLabels: Record<string, string> = {
 };
 
 const getImageSrc = (image: string) => {
-  if (!image) return '/uploads/placeholder.jpg';
-  if (image.startsWith('/') || image.startsWith('http')) return image;
-  return `/media/${image}`;
+  return getImageUrl(image || "/uploads/placeholder.jpg");
 };
 
 export default function SpectaclePage() {

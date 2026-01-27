@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { getImageUrl } from '@/lib/utils';
 import Link from 'next/link';
 import Navigation from '@/components/layout/Navigation';
 import Footer from '@/components/layout/Footer';
@@ -54,8 +55,7 @@ export default function SpectaclesPage() {
   }, []);
 
   const getImageSrc = (image: string) => {
-    if (image.startsWith('/') || image.startsWith('http')) return image;
-    return '/media/' + image;
+    return getImageUrl(image);
   };
 
   if (loading) {
