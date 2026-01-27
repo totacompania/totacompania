@@ -2,6 +2,18 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import { Partner, Media } from '@/models';
 
+// Helper to get CDN URL
+function getCdnUrl(path: string): string {
+  if (!path) return '';
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+  
+  const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL || 'https://cdn.totacompania.fr';
+  if (path.startsWith('/uploads/')) {
+    return cdnUrl + path.replace('/uploads/', '/');
+  }
+  return path;
+}
+
 export async function GET(request: NextRequest) {
   try {
     await connectDB();
@@ -15,17 +27,25 @@ export async function GET(request: NextRequest) {
 
     const partners = await Partner.find(query).sort({ order: 1, createdAt: -1 }).lean();
 
-    // Fetch média paths for partners with mediaId
+    // Fetch media paths for partners with mediaId and transform to CDN URL
     const partnersWithLogos = await Promise.all(
       partners.map(async (partner) => {
-        if (partner.mediaId) {
+        let logoPath = partner.logoPath || null;
+        
+        if (partner.mediaId && !logoPath) {
           const media = await Media.findById(partner.mediaId).lean();
-          return {
-            ...partner,
-            logoPath: media?.path || null
-          };
+          logoPath = media?.path || media?.url || null;
         }
-        return partner;
+        
+        // Transform to CDN URL
+        if (logoPath) {
+          logoPath = getCdnUrl(logoPath);
+        }
+        
+        return {
+          ...partner,
+          logoPath
+        };
       })
     );
 
