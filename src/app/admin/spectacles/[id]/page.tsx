@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
+import { getImageUrl } from '@/lib/utils';
 import Image from 'next/image';
 import { ArrowLeft, Save, Trash2, Plus, X, ImageIcon, FileText, ChevronDown, Check, Handshake } from 'lucide-react';
 import MediaPicker from '@/components/admin/MediaPicker';
