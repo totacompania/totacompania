@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 180" fill="none">
+  <!-- Petit personnage oiseau/creature qui court -->
+  <g id="tota-mascot">
+    <!-- Corps principal -->
+    <ellipse cx="85" cy="100" rx="35" ry="45" fill="#2a1f14" stroke="#2a1f14" stroke-width="2"/>
+
+    <!-- Tete/Bec -->
+    <path d="M60 55 Q40 45 25 60 Q15 75 30 85 Q45 90 60 80 Z" fill="#2a1f14" stroke="#2a1f14" stroke-width="2"/>
+
+    <!-- Oeil -->
+    <circle cx="45" cy="68" r="8" fill="white"/>
+    <circle cx="47" cy="68" r="4" fill="#2a1f14"/>
+
+    <!-- Bras gauche (ouvert) -->
+    <path d="M55 85 Q30 70 20 80 Q15 90 25 95" fill="none" stroke="#2a1f14" stroke-width="4" stroke-linecap="round"/>
+    <path d="M20 80 L10 75 M20 80 L12 85 M20 80 L15 90" stroke="#2a1f14" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- Bras droit -->
+    <path d="M110 85 Q130 75 140 85" fill="none" stroke="#2a1f14" stroke-width="4" stroke-linecap="round"/>
+    <path d="M140 85 L150 80 M140 85 L152 88 M140 85 L148 95" stroke="#2a1f14" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- Jambe gauche (en arriere) -->
+    <path d="M70 140 Q60 155 55 165 Q50 175 60 175" fill="none" stroke="#2a1f14" stroke-width="4" stroke-linecap="round"/>
+
+    <!-- Jambe droite (en avant) -->
+    <path d="M100 140 Q115 155 125 160 Q135 165 130 175" fill="none" stroke="#2a1f14" stroke-width="4" stroke-linecap="round"/>
+
+    <!-- Lignes de mouvement -->
+    <path d="M155 50 L175 40" stroke="#2a1f14" stroke-width="2" stroke-linecap="round"/>
+    <path d="M160 65 L180 60" stroke="#2a1f14" stroke-width="2" stroke-linecap="round"/>
+    <path d="M155 80 L175 80" stroke="#2a1f14" stroke-width="2" stroke-linecap="round"/>
+    <path d="M165 95 L185 100" stroke="#2a1f14" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- Lignes de mouvement arriere -->
+    <path d="M5 110 L15 105" stroke="#2a1f14" stroke-width="2" stroke-linecap="round"/>
+    <path d="M8 125 L18 122" stroke="#2a1f14" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <!-- Texte TOTA COMPANIA sur le corps -->
+  <text x="60" y="95" font-family="Georgia, serif" font-size="11" font-weight="bold" fill="white" transform="rotate(-15, 85, 100)">TOTA</text>
+  <text x="55" y="115" font-family="Georgia, serif" font-size="9" font-weight="bold" fill="white" transform="rotate(-10, 85, 110)">COMPANIA</text>
+</svg>

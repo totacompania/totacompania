@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- Version simplifiee pour favicon -->
+  <rect width="32" height="32" rx="4" fill="#d4a574"/>
+  <!-- Corps oiseau simplifie -->
+  <ellipse cx="16" cy="17" rx="8" ry="10" fill="#2a1f14"/>
+  <!-- Tete/Bec -->
+  <path d="M10 10 Q6 8 5 12 Q5 15 8 16" fill="#2a1f14"/>
+  <!-- Oeil -->
+  <circle cx="7" cy="12" r="2" fill="white"/>
+  <circle cx="7.5" cy="12" r="1" fill="#2a1f14"/>
+  <!-- Bras -->
+  <path d="M8 15 L3 13" stroke="#2a1f14" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M24 14 L28 12" stroke="#2a1f14" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Jambes -->
+  <path d="M13 26 L10 30" stroke="#2a1f14" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M19 26 L23 29" stroke="#2a1f14" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Mouvement -->
+  <path d="M26 8 L29 6" stroke="#2a1f14" stroke-width="1" stroke-linecap="round"/>
+  <path d="M27 12 L30 11" stroke="#2a1f14" stroke-width="1" stroke-linecap="round"/>
+</svg>

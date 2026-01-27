@@ -1,0 +1,86 @@
+# ============================================
+# Tota Compania - Docker Compose
+# Deploiement sur NAS (Synology/UGREEN/QNAP)
+# ============================================
+
+services:
+  totacompania:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: totacompania:latest
+    container_name: totacompania
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+
+    ports:
+      - "3101:3101"
+
+    volumes:
+      # Uploads (images, documents)
+      - ./public/uploads:/app/public/uploads
+      - ./public/documents:/app/public/documents
+      - ./public/images:/app/public/images
+
+    environment:
+      - NODE_ENV=production
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET:-totacompania-secret-change-me}
+      - NEXTAUTH_URL=${NEXTAUTH_URL:-http://localhost:3101}
+      - MONGODB_URI=mongodb://mongodb:27017/totacompania
+      - TZ=${TZ:-Europe/Paris}
+
+    healthcheck:
+      test: ["CMD", "node", "-e", "require(\"http\").get(\"http://localhost:3101/\", (r) => process.exit(r.statusCode === 200 ? 0 : 1)).on(\"error\", () => process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 128M
+
+  mongodb:
+    image: mongo:7
+    container_name: totacompania-mongodb
+    restart: unless-stopped
+
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+
+    environment:
+      - TZ=${TZ:-Europe/Paris}
+
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "5m"
+        max-file: "2"
+
+volumes:
+  mongodb_data:
+  mongodb_config:
+
+networks:
+  default:
+    name: totacompania-network

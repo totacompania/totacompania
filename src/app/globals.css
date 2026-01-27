@@ -1,0 +1,345 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Caveat:wght@400..700&family=Patrick+Hand&display=swap');
+
+/* Police locale Sans Merci Bold */
+@font-face {
+  font-family: 'Sans Merci';
+  src: url('/fonts/SansMerci-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ========================================
+   VARIABLES CSS - NOUVELLE PALETTE
+   ======================================== */
+:root {
+  --brand-red: #f02822;
+  --brand-red-light: #ff4d47;
+  --brand-red-dark: #c41e1a;
+  --brand-violet: #844cfc;
+  --brand-violet-light: #dbcbff;
+  --brand-violet-dark: #6a3acc;
+  --brand-violet-bg: #0a0a0f;
+}
+
+@layer base {
+  * {
+    border-color: #e5e7eb;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply text-theater-brown font-body;
+    overflow-x: hidden;
+    max-width: 100vw;
+    background: #faf8f5;
+    min-height: 100vh;
+  }
+
+  main {
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-title font-bold;
+    color: var(--brand-red);
+  }
+
+  ::selection {
+    background: rgba(132, 76, 252, 0.3);
+    color: #2a1f14;
+  }
+}
+
+@layer components {
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* ========================================
+     BOUTONS
+     ======================================== */
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 text-white font-medium transition-all duration-200;
+    background: var(--brand-violet);
+    box-shadow: 0 0 20px rgba(132, 76, 252, 0.3);
+  }
+  .btn-primary:hover {
+    background: var(--brand-violet-dark);
+    box-shadow: 0 0 30px rgba(132, 76, 252, 0.5);
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 font-medium transition-all duration-200;
+    background: var(--brand-red);
+    color: white;
+    box-shadow: 3px 3px 0 rgba(192, 30, 26, 0.4);
+  }
+  .btn-secondary:hover {
+    background: var(--brand-red-dark);
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0 rgba(192, 30, 26, 0.4);
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-transparent border-2 font-medium transition-all duration-200;
+    border-color: var(--brand-violet);
+    color: var(--brand-violet);
+  }
+  .btn-outline:hover {
+    background: var(--brand-violet);
+    color: white;
+  }
+
+  .btn-outline-light {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-transparent border-2 font-medium transition-all duration-200;
+    border-color: white;
+    color: white;
+  }
+  .btn-outline-light:hover {
+    background: white;
+    color: var(--brand-violet-bg);
+  }
+
+  /* ========================================
+     CARTES
+     ======================================== */
+
+  .card {
+    @apply bg-white/90 backdrop-blur-sm overflow-hidden transition-all duration-300 w-full max-w-full;
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.08),
+      0 2px 4px -2px rgba(0, 0, 0, 0.05),
+      0 0 0 1px rgba(132, 76, 252, 0.1);
+  }
+  .card:hover {
+    box-shadow:
+      0 20px 25px -5px rgba(132, 76, 252, 0.15),
+      0 8px 10px -6px rgba(0, 0, 0, 0.08),
+      0 0 0 1px rgba(132, 76, 252, 0.2);
+    transform: translateY(-4px);
+  }
+
+  .card-violet {
+    @apply overflow-hidden p-6 transition-all duration-300;
+    background: linear-gradient(135deg, rgba(219, 203, 255, 0.4) 0%, rgba(219, 203, 255, 0.2) 100%);
+    backdrop-filter: blur(10px);
+    box-shadow:
+      0 4px 6px -1px rgba(132, 76, 252, 0.1),
+      0 2px 4px -2px rgba(0, 0, 0, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+  .card-violet:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 10px 15px -3px rgba(132, 76, 252, 0.2),
+      0 4px 6px -4px rgba(0, 0, 0, 0.08);
+  }
+
+  .card-kraft {
+    @apply overflow-hidden p-6 transition-all duration-300;
+    background: linear-gradient(135deg, rgba(219, 203, 255, 0.3) 0%, rgba(250, 248, 245, 0.9) 100%);
+    backdrop-filter: blur(10px);
+  }
+  .card-kraft:hover {
+    transform: translateY(-2px);
+  }
+
+  /* ========================================
+     NAVIGATION
+     ======================================== */
+
+  .nav-link {
+    @apply relative px-4 py-2 font-medium transition-colors duration-200 font-body;
+    color: #2a1f14;
+  }
+  .nav-link:hover {
+    color: var(--brand-violet);
+  }
+  .nav-link::after {
+    content: '';
+    @apply absolute bottom-0 left-1/2 w-0 h-0.5 transition-all duration-300;
+    background: var(--brand-violet);
+    transform: translateX(-50%);
+  }
+  .nav-link:hover::after {
+    @apply w-full;
+  }
+
+  /* ========================================
+     SECTIONS
+     ======================================== */
+
+  .section-violet-dark {
+    @apply py-16 md:py-24 relative;
+    background: var(--brand-violet-bg);
+  }
+
+  .section-violet-light {
+    @apply py-16 md:py-24 relative;
+    background: linear-gradient(135deg, rgba(219, 203, 255, 0.5) 0%, rgba(219, 203, 255, 0.3) 100%);
+  }
+
+  .section-white {
+    @apply py-16 md:py-24 relative;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(250, 248, 245, 0.98) 100%);
+  }
+
+  .section-gradient {
+    @apply py-16 md:py-24 relative overflow-hidden;
+    background: linear-gradient(135deg, #faf8f5 0%, rgba(219, 203, 255, 0.2) 100%);
+  }
+
+  /* ========================================
+     AURORA ANIMATIONS
+     ======================================== */
+
+  @keyframes aurora {
+    from {
+      background-position: 50% 50%, 50% 50%;
+    }
+    to {
+      background-position: 350% 50%, 350% 50%;
+    }
+  }
+
+  @keyframes aurora-blob-1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(10%, 5%) scale(1.1); }
+    66% { transform: translate(-5%, 10%) scale(0.95); }
+  }
+
+  @keyframes aurora-blob-2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(-15%, 10%) scale(1.15); }
+    66% { transform: translate(10%, -5%) scale(0.9); }
+  }
+
+  @keyframes aurora-blob-3 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(5%, -15%) scale(1.05); }
+    66% { transform: translate(-10%, 5%) scale(1.1); }
+  }
+
+  .animate-aurora {
+    animation: aurora 60s linear infinite;
+  }
+
+  .animate-aurora-blob-1 {
+    animation: aurora-blob-1 20s ease-in-out infinite;
+  }
+
+  .animate-aurora-blob-2 {
+    animation: aurora-blob-2 25s ease-in-out infinite;
+  }
+
+  .animate-aurora-blob-3 {
+    animation: aurora-blob-3 30s ease-in-out infinite;
+  }
+
+  /* ========================================
+     BACKOFFICE STYLES
+     ======================================== */
+
+  .admin-sidebar {
+    background: linear-gradient(180deg, var(--brand-violet-bg) 0%, #1a1a2e 100%);
+  }
+
+  .admin-sidebar-link {
+    @apply px-4 py-3 transition-all duration-200;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .admin-sidebar-link:hover,
+  .admin-sidebar-link.active {
+    background: rgba(132, 76, 252, 0.2);
+    color: white;
+    border-left: 3px solid var(--brand-violet);
+  }
+
+  .admin-card {
+    @apply bg-white p-6 transition-all duration-200;
+    box-shadow: 0 2px 8px rgba(132, 76, 252, 0.08);
+  }
+
+  .admin-table th {
+    background: rgba(219, 203, 255, 0.3);
+    color: var(--brand-violet-dark);
+    @apply font-medium py-3 px-4 text-left;
+  }
+
+  .admin-table td {
+    @apply py-3 px-4 border-b;
+    border-color: rgba(132, 76, 252, 0.1);
+  }
+
+  .admin-input {
+    @apply w-full px-4 py-2 border transition-all duration-200;
+    border-color: rgba(132, 76, 252, 0.2);
+  }
+  .admin-input:focus {
+    outline: none;
+    border-color: var(--brand-violet);
+    box-shadow: 0 0 0 3px rgba(132, 76, 252, 0.1);
+  }
+
+  .admin-btn {
+    @apply px-4 py-2 font-medium transition-all duration-200;
+    background: var(--brand-violet);
+    color: white;
+  }
+  .admin-btn:hover {
+    background: var(--brand-violet-dark);
+  }
+
+  /* ========================================
+     UTILITAIRES
+     ======================================== */
+
+  .text-brand-red { color: var(--brand-red); }
+  .text-brand-violet { color: var(--brand-violet); }
+  .text-brand-violet-light { color: var(--brand-violet-light); }
+  .bg-brand-red { background: var(--brand-red); }
+  .bg-brand-violet { background: var(--brand-violet); }
+  .bg-brand-violet-light { background: var(--brand-violet-light); }
+  .bg-brand-violet-bg { background: var(--brand-violet-bg); }
+}
+
+/* Scrollbar style */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(219, 203, 255, 0.3);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--brand-violet);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-violet-dark);
+}
+
+/* Fix mobile overflow */
+@media (max-width: 768px) {
+  .card {
+    max-width: calc(100vw - 2rem);
+  }
+  
+  .container-custom {
+    overflow-x: hidden;
+  }
+  
+  .grid {
+    overflow-x: hidden;
+  }
+}

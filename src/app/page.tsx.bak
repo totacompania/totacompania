@@ -1,0 +1,549 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import Link from 'next/link';
+import Navigation from '@/components/layout/Navigation';
+import Footer from '@/components/layout/Footer';
+import { RansomTitle } from '@/components/artistic';
+import { LogoLoop } from '@/components/reactbits';
+import { Calendar, ArrowRight, MapPin, Clock, Users, Theater, GraduationCap, Handshake } from 'lucide-react';
+
+interface Spectacle {
+  _id: string;
+  slug: string;
+  title: string;
+  subtitle?: string;
+  image?: string;
+  category: string;
+  duration?: string;
+  audience?: string;
+  ageRange?: string;
+}
+
+// Helper pour obtenir la source de l'image
+const getImageSrc = (image?: string): string => {
+  if (!image) return '/images/placeholder.jpg';
+  if (image.startsWith('/') || image.startsWith('http')) return image;
+  return `/media/${image}`;
+};
+
+// Helper pour obtenir le public cible
+const getAudience = (spectacle: Spectacle): string | undefined => {
+  return spectacle.audience || spectacle.ageRange;
+};
+
+interface Event {
+  _id: string;
+  title: string;
+  date: string;
+  time?: string;
+  location: string;
+  spectacleId?: string;
+}
+
+interface Partner {
+  _id: string;
+  name: string;
+  mediaId?: string;
+  logoPath?: string;
+  website?: string;
+}
+
+export default function HomePage() {
+  const [spectacles, setSpectacles] = useState<Spectacle[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [partners, setPartners] = useState<Partner[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [specRes, eventsRes, partnersRes] = await Promise.all([
+          fetch('/api/spectacles?limit=3'),
+          fetch('/api/events?limit=3&upcoming=true'),
+          fetch('/api/partners')
+        ]);
+
+        if (specRes.ok) {
+          const specData = await specRes.json();
+          setSpectacles(Array.isArray(specData) ? specData : specData.data || []);
+        }
+
+        if (eventsRes.ok) {
+          const eventsData = await eventsRes.json();
+          setEvents(Array.isArray(eventsData) ? eventsData : eventsData.data || []);
+        }
+
+        if (partnersRes.ok) {
+          const partnersData = await partnersRes.json();
+          setPartners(Array.isArray(partnersData) ? partnersData : []);
+        }
+      } catch (error) {
+        console.error('Error fetching homepage data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  return (
+    <>
+      <Navigation />
+
+      <main>
+        {/* Hero Section - Design moderne */}
+        <section className="relative min-h-[90vh] flex flex-col justify-center overflow-hidden pt-16">
+
+          {/* Contenu central */}
+          <div className="relative z-10 container-custom">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center"
+            >
+              {/* Titre style ransom note */}
+              <h1 className="sr-only">Tota Compania</h1>
+              <RansomTitle text="TOTA COMPANIA" className="mb-6" />
+
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="text-2xl md:text-3xl font-craft text-theater-brown/90 mb-4"
+              >
+                Theatre pour ici et maintenant
+              </motion.p>
+
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6 }}
+                className="text-lg text-theater-brown/70 max-w-2xl mx-auto mb-10"
+              >
+                Compagnie de theatre basee a Toul, en Lorraine.
+                Creations poetiques pour petits et grands depuis plus de 20 ans.
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 }}
+                className="flex flex-col sm:flex-row gap-4 justify-center"
+              >
+                <Link href="/spectacles" className="btn-primary group">
+                  <Theater className="w-5 h-5 transition-transform group-hover:scale-110" />
+                  Nos spectacles
+                </Link>
+                <Link href="/programmation" className="btn-outline group">
+                  <Calendar className="w-5 h-5 transition-transform group-hover:scale-110" />
+                  Agenda
+                </Link>
+              </motion.div>
+            </motion.div>
+          </div>
+
+          {/* Vague decorative */}
+          <div className="absolute bottom-0 left-0 right-0">
+            <svg viewBox="0 0 1440 120" fill="none" className="w-full" preserveAspectRatio="none">
+              <path
+                d="M0,60 C240,100 480,20 720,60 C960,100 1200,20 1440,60 L1440,120 L0,120 Z"
+                fill="url(#wave-gradient)"
+                fillOpacity="0.8"
+              />
+              <defs>
+                <linearGradient id="wave-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="rgba(245, 235, 220, 0.9)" />
+                  <stop offset="50%" stopColor="rgba(250, 240, 225, 0.95)" />
+                  <stop offset="100%" stopColor="rgba(245, 235, 220, 0.9)" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </section>
+
+        {/* Section Spectacles */}
+        <section className="section-kraft relative">
+          <div className="container-custom">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <h2 className="section-title inline-flex items-center gap-3">
+                <Theater className="w-8 h-8 text-primary" />
+                Nos Spectacles
+              </h2>
+              <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+                Des creations poetiques et lumineuses pour tous les publics
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              {loading ? (
+                Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className="card animate-pulse">
+                    <div className="aspect-[4/3] bg-gradient-to-br from-kraft-200 to-kraft-300" />
+                    <div className="p-6 space-y-3">
+                      <div className="h-6 bg-kraft-200 rounded-lg w-3/4" />
+                      <div className="h-4 bg-kraft-200 rounded-lg w-1/2" />
+                    </div>
+                  </div>
+                ))
+              ) : spectacles.length > 0 ? (
+                spectacles.map((spectacle, index) => (
+                  <motion.div
+                    key={spectacle._id}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <Link href={`/spectacles/${spectacle.slug}`} className="card block group">
+                      {/* Image uniformisee 4:3 */}
+                      <div className="relative aspect-[4/3] overflow-hidden">
+                        <Image
+                          src={getImageSrc(spectacle.image)}
+                          alt={spectacle.title}
+                          fill
+                          className="object-cover transition-transform duration-700 group-hover:scale-110"
+                        />
+                        {/* Overlay gradient */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+                        {/* Badge categorie */}
+                        <span className="absolute top-4 left-4 px-3 py-1.5 bg-white/90 backdrop-blur-sm text-theater-brown text-xs font-bold rounded-full shadow-lg">
+                          {spectacle.category}
+                        </span>
+                        {/* Titre sur l'image */}
+                        <div className="absolute bottom-0 left-0 right-0 p-5">
+                          <h3 className="font-display text-xl md:text-2xl font-bold text-white drop-shadow-lg">
+                            {spectacle.title}
+                          </h3>
+                          {spectacle.subtitle && (
+                            <p className="text-white/80 text-sm mt-1 line-clamp-1">{spectacle.subtitle}</p>
+                          )}
+                        </div>
+                      </div>
+                      {/* Infos en bas */}
+                      <div className="p-4 flex items-center justify-between bg-gradient-to-r from-white/50 to-white/30">
+                        <div className="flex items-center gap-3 text-sm text-theater-brown/70">
+                          {spectacle.duration && (
+                            <span className="flex items-center gap-1">
+                              <Clock className="w-4 h-4" />
+                              {spectacle.duration}
+                            </span>
+                          )}
+                          {getAudience(spectacle) && (
+                            <span className="flex items-center gap-1">
+                              <Users className="w-4 h-4" />
+                              {getAudience(spectacle)}
+                            </span>
+                          )}
+                        </div>
+                        <ArrowRight className="w-5 h-5 text-primary opacity-0 group-hover:opacity-100 transition-all transform translate-x-0 group-hover:translate-x-1" />
+                      </div>
+                    </Link>
+                  </motion.div>
+                ))
+              ) : (
+                <div className="col-span-3 text-center py-12 text-gray-500">
+                  Aucun spectacle pour le moment
+                </div>
+              )}
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="text-center mt-12"
+            >
+              <Link
+                href="/spectacles"
+                className="inline-flex items-center gap-2 text-primary font-medium hover:text-primary-dark transition-colors"
+              >
+                Voir tous les spectacles
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Section Agenda */}
+        <section className="section-white relative">
+          <div className="container-custom">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="flex flex-col md:flex-row md:items-end md:justify-between mb-12"
+            >
+              <div>
+                <h2 className="section-title inline-flex items-center gap-3">
+                  <Calendar className="w-8 h-8 text-primary" />
+                  Prochaines Dates
+                </h2>
+                <p className="mt-4 text-gray-600">
+                  Venez nous voir sur scene !
+                </p>
+              </div>
+              <Link
+                href="/programmation"
+                className="mt-4 md:mt-0 inline-flex items-center gap-2 text-primary font-medium hover:text-primary-dark transition-colors"
+              >
+                Voir l'agenda complet
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </motion.div>
+
+            <div className="space-y-4">
+              {loading ? (
+                Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className="card-kraft animate-pulse">
+                    <div className="flex gap-4">
+                      <div className="w-24 h-16 bg-kraft-300 rounded" />
+                      <div className="flex-1 space-y-2">
+                        <div className="h-5 bg-kraft-300 rounded w-1/3" />
+                        <div className="h-4 bg-kraft-300 rounded w-1/2" />
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : events.length > 0 ? (
+                events.map((event, index) => (
+                  <motion.div
+                    key={event._id}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    className="card-kraft group hover:translate-x-2 transition-transform cursor-pointer"
+                  >
+                    <Link href="/programmation" className="flex flex-col md:flex-row md:items-center gap-4">
+                      <div className="flex-shrink-0 md:w-32">
+                        <div className="text-lg font-bold text-primary">{event.date}</div>
+                        {event.time && <div className="text-sm text-gray-500">{event.time}</div>}
+                      </div>
+                      <div className="hidden md:block w-px h-12 bg-kraft-300" />
+                      <div className="flex-1">
+                        <h3 className="font-display text-lg font-bold text-theater-brown group-hover:text-primary transition-colors">
+                          {event.title}
+                        </h3>
+                        <div className="flex items-center gap-2 text-gray-500 text-sm mt-1">
+                          <MapPin className="w-4 h-4" />
+                          {event.location}
+                        </div>
+                      </div>
+                      <div className="flex-shrink-0">
+                        <div className="w-10 h-10 rounded-full bg-kraft-200 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+                          <ArrowRight className="w-5 h-5" />
+                        </div>
+                      </div>
+                    </Link>
+                  </motion.div>
+                ))
+              ) : (
+                <div className="card-kraft text-center py-8 text-gray-500">
+                  Aucun evenement a venir pour le moment
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* Section La Compagnie */}
+        <section className="section-gradient relative overflow-hidden">
+          <div className="container-custom relative z-10">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+              >
+                <div className="mb-6">
+                  <Image
+                    src="/uploads/2019/07/la-compagnie2.png"
+                    alt="La Compagnie"
+                    width={250}
+                    height={60}
+                    className="mb-4"
+                  />
+                </div>
+
+                <p className="text-gray-700 text-lg mb-6 leading-relaxed">
+                  Basee au Centre Culturel Vauban a Toul, Tota Compania cree des spectacles
+                  vivants et poetiques depuis plus de 20 ans. Notre repertoire s'adresse
+                  a tous les publics, des plus jeunes aux plus grands.
+                </p>
+                <p className="text-gray-700 mb-8 leading-relaxed">
+                  Contes, theatre, marionnettes... Nous portons sur scene des histoires
+                  qui font rever, reflechir et grandir.
+                </p>
+
+                <Link href="/la-compagnie" className="btn-primary">
+                  Decouvrir la compagnie
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+              >
+                <div className="grid grid-cols-2 gap-4">
+                  {[
+                    { number: '20+', label: "Annees d'experience", color: 'bg-mustard/20' },
+                    { number: '5', label: 'Spectacles en tournee', color: 'bg-primary/10' },
+                    { number: '100+', label: 'Representations/an', color: 'bg-primary/10' },
+                    { number: '100+', label: 'Amateurs formes', color: 'bg-mustard/20' },
+                  ].map((stat, index) => (
+                    <motion.div
+                      key={stat.label}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1 }}
+                      className={`${stat.color} rounded-2xl p-6 text-center`}
+                      style={{ transform: `rotate(${index % 2 === 0 ? -2 : 2}deg)` }}
+                    >
+                      <div className="text-4xl font-bold font-display text-theater-brown">{stat.number}</div>
+                      <div className="text-sm text-gray-600 mt-1">{stat.label}</div>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* Section Se Former */}
+        <section className="section-white">
+          <div className="container-custom">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <h2 className="section-title inline-flex items-center gap-3">
+                <GraduationCap className="w-8 h-8 text-primary" />
+                Se Former
+              </h2>
+              <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+                Ecole de theatre, stages vacances, interventions scolaires...
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {[
+                {
+                  title: 'Ecole de Theatre',
+                  description: 'Plus de 100 amateurs encadres par une equipe professionnelle',
+                  href: '/ecole',
+                  icon: '🎭'
+                },
+                {
+                  title: 'Stages Vacances',
+                  description: 'Stages enfants pendant les vacances scolaires',
+                  href: '/stages',
+                  icon: '🌟'
+                },
+                {
+                  title: 'Scolaires',
+                  description: 'Interventions en milieu scolaire et mediation culturelle',
+                  href: '/scolaires',
+                  icon: '📚'
+                }
+              ].map((item, index) => (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <Link href={item.href} className="card-kraft block h-full group text-center">
+                    <div className="text-5xl mb-4">{item.icon}</div>
+                    <h3 className="font-display text-xl font-bold text-theater-brown group-hover:text-primary transition-colors mb-2">
+                      {item.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm">{item.description}</p>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Section Partenaires */}
+        {partners.length > 0 && partners.some(p => p.mediaId || p.logoPath) && (
+          <section className="py-16 relative overflow-hidden">
+            {/* Background gradient */}
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-amber-50/30 to-transparent" />
+
+            <div className="container-custom mb-8 text-center relative z-10">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="flex items-center justify-center gap-3 mb-2"
+              >
+                <Handshake className="w-7 h-7 text-amber-600" />
+                <h2 className="font-display text-2xl font-bold text-theater-brown">
+                  Ils nous font confiance
+                </h2>
+              </motion.div>
+              <p className="text-theater-brown/60 text-sm">Nos partenaires institutionnels et culturels</p>
+            </div>
+
+            <div className="relative z-10">
+              <LogoLoop
+                logos={partners
+                  .filter(p => p.mediaId || p.logoPath)
+                  .map(p => ({
+                    id: p._id,
+                    src: p.logoPath || `/api/media/${p.mediaId}`,
+                    alt: p.name,
+                    href: p.website,
+                  }))}
+                speed={35}
+                pauseOnHover={true}
+              />
+            </div>
+          </section>
+        )}
+
+        {/* CTA Section */}
+        <section className="py-24 relative overflow-hidden">
+          <div className="container-custom relative z-10 text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-3xl md:text-5xl font-display font-bold text-theater-brown mb-6">
+                Envie de nous programmer ?
+              </h2>
+              <p className="text-theater-brown/70 text-lg max-w-2xl mx-auto mb-10">
+                Theatre, ecole, mediatheque ou festival... Nos spectacles s'adaptent
+                a tous les lieux. Contactez-nous pour en savoir plus.
+              </p>
+              <Link href="/contact" className="btn-primary text-lg px-8 py-4 group">
+                Nous contacter
+                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </motion.div>
+          </div>
+        </section>
+      </main>
+
+      <Footer />
+    </>
+  );
+}
