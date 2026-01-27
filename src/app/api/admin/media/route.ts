@@ -5,6 +5,13 @@ import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 import { existsSync } from 'fs';
 
+// Configuration pour le proxy d'upload vers le NAS
+const NAS_UPLOAD_URL = process.env.NAS_UPLOAD_URL || 'https://tota.boris-henne.fr/api/upload-proxy';
+const UPLOAD_PROXY_TOKEN = process.env.UPLOAD_PROXY_TOKEN || 'tota-upload-secret-2024';
+
+// Detecter si on est sur Vercel (production)
+const isVercel = process.env.VERCEL === '1' || process.env.VERCEL === 'true';
+
 export async function GET(request: NextRequest) {
   try {
     await connectDB();
@@ -63,9 +70,9 @@ export async function GET(request: NextRequest) {
       .skip(skip)
       .limit(limit);
 
-    // Get unique folders and catégories for filters
+    // Get unique folders and categories for filters
     const folders = await Media.distinct('folder');
-    const catégories = await Media.distinct('category');
+    const categories = await Media.distinct('category');
 
     return NextResponse.json({
       data: result,
@@ -77,13 +84,91 @@ export async function GET(request: NextRequest) {
       },
       filters: {
         folders: folders.filter(Boolean),
-        catégories: catégories.filter(Boolean),
+        categories: categories.filter(Boolean),
       },
     });
   } catch (error) {
     console.error('Error fetching media:', error);
     return NextResponse.json({ error: 'Failed to fetch media' }, { status: 500 });
   }
+}
+
+// Upload vers le NAS via proxy (pour Vercel/Production)
+async function uploadViaNasProxy(files: File[]): Promise<unknown[]> {
+  const formData = new FormData();
+  
+  for (const file of files) {
+    formData.append('files', file);
+  }
+
+  const response = await fetch(NAS_UPLOAD_URL, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${UPLOAD_PROXY_TOKEN}`,
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to upload to NAS');
+  }
+
+  return response.json();
+}
+
+// Upload local (pour le NAS/Dev)
+async function uploadLocally(files: File[]): Promise<unknown[]> {
+  // Creer le dossier avec la date (YYYY/MM)
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const dateFolder = `${year}/${month}`;
+  
+  const uploadDir = join(process.cwd(), 'public', 'uploads', dateFolder);
+
+  // Creer le dossier s'il n'existe pas
+  if (!existsSync(uploadDir)) {
+    await mkdir(uploadDir, { recursive: true });
+  }
+
+  const results = [];
+
+  for (const file of files) {
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+
+    // Generer un nom de fichier unique
+    const timestamp = Date.now();
+    const sanitizedName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+    const baseName = sanitizedName.substring(0, sanitizedName.lastIndexOf('.')) || sanitizedName;
+    const extension = file.name.split('.').pop();
+    const filename = `${baseName}_${timestamp}.${extension}`;
+    const filepath = join(uploadDir, filename);
+
+    // Ecrire le fichier
+    await writeFile(filepath, buffer);
+
+    // Chemin relatif pour la base de donnees
+    const relativePath = `/uploads/${dateFolder}/${filename}`;
+
+    // Sauvegarder en base de donnees
+    const media = new Media({
+      filename,
+      originalName: file.name,
+      mimeType: file.type,
+      size: file.size,
+      path: relativePath,
+      url: relativePath,
+      folder: '/',
+      category: 'general',
+    });
+    await media.save();
+
+    results.push(media);
+  }
+
+  return results;
 }
 
 export async function POST(request: NextRequest) {
@@ -96,48 +181,22 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No files uploaded' }, { status: 400 });
     }
 
-    const uploadDir = join(process.cwd(), 'public', 'uploads');
+    let results;
 
-    // Create uploads directory if it doesn't exist
-    if (!existsSync(uploadDir)) {
-      await mkdir(uploadDir, { recursive: true });
-    }
-
-    const results = [];
-
-    for (const file of files) {
-      const bytes = await file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-
-      // Generate unique filename
-      const timestamp = Date.now();
-      const randomStr = Math.random().toString(36).substring(7);
-      const extension = file.name.split('.').pop();
-      const filename = `${timestamp}-${randomStr}.${extension}`;
-      const filepath = join(uploadDir, filename);
-
-      // Write file
-      await writeFile(filepath, buffer);
-
-      // Save to database
-      const media = new Media({
-        filename,
-        originalName: file.name,
-        mimeType: file.type,
-        size: file.size,
-        path: `/uploads/${filename}`,
-        url: `/uploads/${filename}`,
-        folder: '/',
-        category: 'général',
-      });
-      await media.save();
-
-      results.push(media);
+    if (isVercel) {
+      // En production (Vercel), envoyer vers le NAS
+      console.log('Production mode: uploading via NAS proxy');
+      results = await uploadViaNasProxy(files);
+    } else {
+      // En dev (NAS), ecrire localement
+      console.log('Dev mode: uploading locally');
+      results = await uploadLocally(files);
     }
 
     return NextResponse.json(results, { status: 201 });
   } catch (error) {
     console.error('Error uploading media:', error);
-    return NextResponse.json({ error: 'Failed to upload media' }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Failed to upload media';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
