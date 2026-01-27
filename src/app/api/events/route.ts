@@ -1,8 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
-import { Event } from '@/models';
+import { Event, Media } from '@/models';
+import mongoose from 'mongoose';
 
 export const dynamic = 'force-dynamic';
+
+// Helper to check if a string is a valid MongoDB ObjectId
+function isValidObjectId(str: string): boolean {
+  return mongoose.Types.ObjectId.isValid(str) && str.length === 24;
+}
+
+// Helper to get CDN URL
+function getCdnUrl(path: string): string {
+  if (!path) return '';
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+  
+  const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL || 'https://cdn.totacompania.fr';
+  if (path.startsWith('/uploads/')) {
+    return cdnUrl + path.replace('/uploads/', '/');
+  }
+  return path;
+}
 
 export async function GET(request: NextRequest) {
   try {
@@ -21,7 +39,6 @@ export async function GET(request: NextRequest) {
     } else if (past) {
       query.date = { $lt: new Date() };
     }
-    // Si ni upcoming ni past, on retourné tous les événements
 
     if (type) {
       query.type = type;
@@ -30,15 +47,44 @@ export async function GET(request: NextRequest) {
     const events = await Event.find(query)
       .sort({ date: 1 })
       .limit(limit)
-      .populate('spectacleId');
+      .populate('spectacleId')
+      .lean();
 
-    // Transformer les dates pour le frontend
+    // Collect all media IDs that need to be resolved
+    const mediaIds = new Set<string>();
+    events.forEach((event: any) => {
+      if (event.image && isValidObjectId(event.image)) {
+        mediaIds.add(event.image);
+      }
+    });
+
+    // Fetch all media documents in one query
+    const mediaMap = new Map<string, string>();
+    if (mediaIds.size > 0) {
+      const mediaDocuments = await Media.find({
+        _id: { $in: Array.from(mediaIds) }
+      }).select('_id url path').lean();
+      
+      mediaDocuments.forEach((doc: any) => {
+        const url = doc.url || doc.path || '';
+        mediaMap.set(doc._id.toString(), getCdnUrl(url));
+      });
+    }
+
+    // Transform events with resolved image URLs
     const formattedEvents = events.map((event: any) => {
-      const doc = event.toObject();
+      let imageUrl = event.image;
+      if (imageUrl && isValidObjectId(imageUrl)) {
+        imageUrl = mediaMap.get(imageUrl) || '';
+      } else if (imageUrl) {
+        imageUrl = getCdnUrl(imageUrl);
+      }
+
       return {
-        ...doc,
-        date: doc.date?.toISOString() || '',
-        endDate: doc.endDate?.toISOString(),
+        ...event,
+        date: event.date?.toISOString ? event.date.toISOString() : event.date,
+        endDate: event.endDate?.toISOString ? event.endDate.toISOString() : event.endDate,
+        image: imageUrl,
       };
     });
 

@@ -2,6 +2,18 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import { TeamMember, Media } from '@/models';
 
+// Helper to get CDN URL
+function getCdnUrl(path: string): string {
+  if (!path) return '';
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+  
+  const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL || 'https://cdn.totacompania.fr';
+  if (path.startsWith('/uploads/')) {
+    return cdnUrl + path.replace('/uploads/', '/');
+  }
+  return path;
+}
+
 export async function GET(request: NextRequest) {
   try {
     await connectDB();
@@ -10,7 +22,6 @@ export async function GET(request: NextRequest) {
 
     const query: Record<string, unknown> = { active: true };
     if (category) {
-      // Search in roles array for matching category
       query['roles.category'] = category;
     }
 
@@ -26,18 +37,21 @@ export async function GET(request: NextRequest) {
           imagePath = media?.path || null;
         }
 
-        // Get the role for this category (for backward compat)
+        // Transform to CDN URL
+        if (imagePath) {
+          imagePath = getCdnUrl(imagePath);
+        }
+
         const matchingRole = category
           ? member.roles?.find((r: { category: string }) => r.category === category)
           : member.roles?.[0];
 
-        // Get all roles as a formatted string
         const allRoles = member.roles?.map((r: { title: string }) => r.title).join(', ') || '';
 
         return {
           ...member,
           imagePath,
-          // For backward compatibility: single role field
+          photo: imagePath,
           role: matchingRole?.title || allRoles,
           category: matchingRole?.category || member.roles?.[0]?.category || 'equipe'
         };

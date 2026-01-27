@@ -2,6 +2,18 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import { Media } from '@/models';
 
+// Helper to get CDN URL
+function getCdnUrl(path: string): string {
+  if (!path) return '';
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+  
+  const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL || 'https://cdn.totacompania.fr';
+  if (path.startsWith('/uploads/')) {
+    return cdnUrl + path.replace('/uploads/', '/');
+  }
+  return path;
+}
+
 export async function GET(request: NextRequest) {
   try {
     await connectDB();
@@ -17,12 +29,19 @@ export async function GET(request: NextRequest) {
     };
 
     const [result, total] = await Promise.all([
-      Media.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit),
+      Media.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
       Media.countDocuments(query)
     ]);
 
+    // Transform URLs to use CDN
+    const transformedResult = result.map((media: any) => ({
+      ...media,
+      url: getCdnUrl(media.url || media.path || ''),
+      path: getCdnUrl(media.path || media.url || '')
+    }));
+
     return NextResponse.json({
-      data: result,
+      data: transformedResult,
       pagination: {
         page,
         limit,
