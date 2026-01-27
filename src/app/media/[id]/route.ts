@@ -1,25 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import { Media } from '@/models';
-import fs from 'fs';
-import path from 'path';
 
-// MIME types mapping
-const mimeTypes: Record<string, string> = {
-  '.jpg': 'image/jpeg',
-  '.jpeg': 'image/jpeg',
-  '.png': 'image/png',
-  '.gif': 'image/gif',
-  '.webp': 'image/webp',
-  '.svg': 'image/svg+xml',
-  '.mp4': 'video/mp4',
-  '.webm': 'video/webm',
-  '.mp3': 'audio/mpeg',
-  '.wav': 'audio/wav',
-  '.pdf': 'application/pdf',
-};
+// Helper to get CDN URL
+function getCdnUrl(path: string): string {
+  if (!path) return '';
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+  
+  const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL || 'https://cdn.totacompania.fr';
+  if (path.startsWith('/uploads/')) {
+    return cdnUrl + path.replace('/uploads/', '/');
+  }
+  return path;
+}
 
-// GET - Serve the actual média file
+// GET - Redirect to CDN URL for the media file
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -33,26 +28,16 @@ export async function GET(
       return NextResponse.json({ error: 'Media not found' }, { status: 404 });
     }
 
-    // Get the file path
-    const filePath = path.join(process.cwd(), 'public', media.url);
+    // Get the CDN URL
+    const mediaUrl = media.url || media.path || '';
+    const cdnUrl = getCdnUrl(mediaUrl);
 
-    if (!fs.existsSync(filePath)) {
-      return NextResponse.json({ error: 'File not found' }, { status: 404 });
+    if (!cdnUrl) {
+      return NextResponse.json({ error: 'Media URL not found' }, { status: 404 });
     }
 
-    const stats = fs.statSync(filePath);
-    const ext = path.extname(filePath).toLowerCase();
-    const contentType = mimeTypes[ext] || 'application/octet-stream';
-    const fileBuffer = fs.readFileSync(filePath);
-
-    return new NextResponse(fileBuffer, {
-      status: 200,
-      headers: {
-        'Content-Type': contentType,
-        'Content-Length': stats.size.toString(),
-        'Cache-Control': 'public, max-age=31536000, immutable',
-      },
-    });
+    // Redirect to CDN
+    return NextResponse.redirect(cdnUrl, 301);
   } catch (error) {
     console.error('Error fetching media:', error);
     return NextResponse.json({ error: 'Failed to fetch media' }, { status: 500 });
