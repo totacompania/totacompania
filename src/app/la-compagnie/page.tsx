@@ -305,7 +305,7 @@ export default function LaCompagniePage() {
                       </div>
                     )}
                   </div>
-                  <h3 className="font-title text-lg text-white">{member.name}</h3>
+                  <h3 className="font-title text-lg">{member.name}</h3>
                   <p className="text-sm text-[#844cfc]">{member.role}</p>
                 </motion.div>
               ))}
