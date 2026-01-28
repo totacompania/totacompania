@@ -5,8 +5,10 @@ import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 import { existsSync } from 'fs';
 
-// Token secret pour securiser l'endpoint (a configurer dans les variables d'environnement)
+// Token secret pour securiser l'endpoint
 const UPLOAD_PROXY_TOKEN = process.env.UPLOAD_PROXY_TOKEN || 'tota-upload-secret-2024';
+// URL de base du NAS pour les fichiers uploades
+const NAS_BASE_URL = process.env.NAS_BASE_URL || 'https://tota.boris-henne.fr';
 
 export async function POST(request: NextRequest) {
   try {
@@ -56,17 +58,19 @@ export async function POST(request: NextRequest) {
       // Ecrire le fichier
       await writeFile(filepath, buffer);
 
-      // Chemin relatif pour la base de donnees
+      // Chemin relatif et URL complete
       const relativePath = `/uploads/${dateFolder}/${filename}`;
+      // URL complete pointant vers le NAS
+      const fullUrl = `${NAS_BASE_URL}${relativePath}`;
 
-      // Sauvegarder en base de donnees
+      // Sauvegarder en base de donnees avec URL complete
       const media = new Media({
         filename,
         originalName: file.name,
         mimeType: file.type,
         size: file.size,
         path: relativePath,
-        url: relativePath,
+        url: fullUrl, // URL complete du NAS
         folder: '/',
         category: 'general',
       });
@@ -79,7 +83,7 @@ export async function POST(request: NextRequest) {
         mimeType: file.type,
         size: file.size,
         path: relativePath,
-        url: relativePath,
+        url: fullUrl, // URL complete du NAS
       });
     }
 
