@@ -1,4 +1,5 @@
 'use client';
+import { getImageUrl } from '@/lib/utils';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -195,7 +196,7 @@ export default function MediathequeAdmin() {
     return (
       <div className={`relative group bg-white rounded-lg shadow-sm overflow-hidden ${selectedItems.includes(item._id) ? "ring-2 ring-amber-500" : ""}`}>
         <div className="aspect-square bg-gray-100 cursor-pointer" onClick={() => setEditingMedia(item)}>
-          {isImage(item.mimeType) ? <img src={item.url} alt={item.alt || item.originalName} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center"><Icon className="w-12 h-12 text-gray-400" /></div>}
+          {isImage(item.mimeType) ? <img src={getImageUrl(item.url)} alt={item.alt || item.originalName} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center"><Icon className="w-12 h-12 text-gray-400" /></div>}
         </div>
         {item.showInGallery && <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-0.5 rounded-full text-xs font-medium">Galerie</div>}
         <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
@@ -216,7 +217,7 @@ export default function MediathequeAdmin() {
       <div className="flex items-center gap-4 p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-amber-50/50 transition-all cursor-pointer group" onClick={() => setEditingMedia(item)}>
         <input type="checkbox" checked={selectedItems.includes(item._id)} onChange={() => toggleSelect(item._id)} onClick={(e) => e.stopPropagation()} className="rounded border-gray-300 text-amber-500 flex-shrink-0" />
         <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-          {isImage(item.mimeType) ? <img src={item.url} alt={item.alt || item.originalName} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center"><Icon className="w-8 h-8 text-gray-400" /></div>}
+          {isImage(item.mimeType) ? <img src={getImageUrl(item.url)} alt={item.alt || item.originalName} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center"><Icon className="w-8 h-8 text-gray-400" /></div>}
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-sm font-medium text-gray-900 truncate">{item.originalName}</p>

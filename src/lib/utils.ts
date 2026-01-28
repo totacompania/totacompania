@@ -81,26 +81,25 @@ export function getYouTubeEmbedUrl(url: string): string | null {
 }
 
 /**
- * Get the full URL for an image, using CDN if configured
+ * Get the full URL for an image, using NAS for uploads
  * @param path - The image path (e.g., '/uploads/2024/08/image.png')
- * @returns The full URL with CDN prefix if available
+ * @returns The full URL pointing to NAS for uploads
  */
 export function getImageUrl(path: string): string {
   if (!path) return '';
-  
+
   // If it's already an absolute URL, return as is
   if (path.startsWith('http://') || path.startsWith('https://')) {
     return path;
   }
-  
-  const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL || "https://cdn.totacompania.fr";
-  
-  // If CDN is configured and path starts with /uploads, use CDN
-  if (cdnUrl && path.startsWith('/uploads/')) {
-    // Remove /uploads prefix as CDN root is the uploads folder
-    const relativePath = path.replace('/uploads/', '/');
-    return cdnUrl + relativePath;
+
+  // Use NAS URL for uploads (files are stored on NAS, not CDN)
+  const nasUrl = 'https://tota.boris-henne.fr';
+
+  // If path starts with /uploads, use NAS URL
+  if (path.startsWith('/uploads/')) {
+    return nasUrl + path;
   }
-  
+
   return path;
 }
