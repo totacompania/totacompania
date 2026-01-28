@@ -70,7 +70,7 @@ export default function PresentationPage() {
               className="relative h-96 rounded-2xl overflow-hidden"
             >
               <Image
-                src="/uploads/hero-bg.jpg"
+                src="https://tota.boris-henne.fr/uploads/hero-bg.jpg"
                 alt="Tota Compania"
                 fill
                 className="object-cover"

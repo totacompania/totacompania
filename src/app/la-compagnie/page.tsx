@@ -341,7 +341,7 @@ export default function LaCompagniePage() {
                   viewport={{ once: true }}
                   className="relative aspect-[4/3] overflow-hidden shadow-lg"
                 >
-                  <Image src="/uploads/2023/03/CA-2023-2048x1536.jpg" alt="Conseil d Administration" fill className="object-cover" />
+                  <Image src="https://tota.boris-henne.fr/uploads/2023/03/CA-2023-2048x1536.jpg" alt="Conseil d Administration" fill className="object-cover" />
                 </motion.div>
 
                 <div>
