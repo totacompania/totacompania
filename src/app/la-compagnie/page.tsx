@@ -147,14 +147,14 @@ export default function LaCompagniePage() {
               viewport={{ once: true }}
               className="max-w-3xl mx-auto text-center"
             >
-              <Quote className="w-12 h-12 text-[#844cfc]/30 mx-auto mb-4" />
-              <blockquote className="text-xl md:text-2xl font-title leading-relaxed italic">
+              <Quote className="w-12 h-12 text-white/40 mx-auto mb-4" />
+              <blockquote className="text-xl md:text-2xl font-title leading-relaxed italic text-white">
                 &quot;{companyQuote.text}&quot;
               </blockquote>
               <div className="mt-6 flex items-center justify-center gap-3">
-                <div className="w-12 h-0.5 bg-[#844cfc]" />
-                <p className="text-gray-600 font-medium">{companyQuote.source}</p>
-                <div className="w-12 h-0.5 bg-[#844cfc]" />
+                <div className="w-12 h-0.5 bg-white/60" />
+                <p className="text-white/80 font-medium">{companyQuote.source}</p>
+                <div className="w-12 h-0.5 bg-white/60" />
               </div>
             </motion.div>
           </div>
@@ -234,8 +234,8 @@ export default function LaCompagniePage() {
               <div className="inline-flex items-center justify-center w-14 h-14 bg-[#844cfc] text-white mb-4">
                 <Users className="w-7 h-7" />
               </div>
-              <h2 className="font-title text-3xl">En Coulisses...</h2>
-              <p className="text-gray-600 mt-2">L'équipe technique et administrative</p>
+              <h2 className="font-title text-3xl text-white">En Coulisses...</h2>
+              <p className="text-white/80 mt-2">L'équipe technique et administrative</p>
             </motion.div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -257,8 +257,8 @@ export default function LaCompagniePage() {
                       </div>
                     )}
                   </div>
-                  <h3 className="font-title text-lg">{member.name}</h3>
-                  <p className="text-sm text-gray-600">{member.role}</p>
+                  <h3 className="font-title text-lg text-white">{member.name}</h3>
+                  <p className="text-sm text-white/80">{member.role}</p>
                 </motion.div>
               ))}
             </div>
@@ -305,7 +305,7 @@ export default function LaCompagniePage() {
                       </div>
                     )}
                   </div>
-                  <h3 className="font-title text-lg">{member.name}</h3>
+                  <h3 className="font-title text-lg text-white">{member.name}</h3>
                   <p className="text-sm text-[#844cfc]">{member.role}</p>
                 </motion.div>
               ))}
@@ -330,7 +330,7 @@ export default function LaCompagniePage() {
               <div className="inline-flex items-center justify-center w-14 h-14 bg-[#6a3acc] text-white mb-4">
                 <Award className="w-7 h-7" />
               </div>
-              <h2 className="font-title text-3xl">Conseil d'Administration</h2>
+              <h2 className="font-title text-3xl text-white">Conseil d'Administration</h2>
             </motion.div>
 
             <div className="max-w-5xl mx-auto">
@@ -368,8 +368,8 @@ export default function LaCompagniePage() {
                       viewport={{ once: true }}
                       className="mt-6 text-center"
                     >
-                      <p className="font-title text-base mb-2">Autres membres du CA</p>
-                      <p className="text-gray-600 text-sm">{otherBoardMembers.map(m => m.name).join(' - ')}</p>
+                      <p className="font-title text-base mb-2 text-white">Autres membres du CA</p>
+                      <p className="text-white/80 text-sm">{otherBoardMembers.map(m => m.name).join(' - ')}</p>
                     </motion.div>
                   )}
                 </div>
@@ -429,7 +429,7 @@ export default function LaCompagniePage() {
             >
               <Image src="https://cdn.totacompania.fr/2019/07/partenaires2.png" alt="Ils nous font confiance" width={280} height={60} className="mb-2" />
             </motion.div>
-            <p className="text-gray-600 text-sm">Nos partenaires institutionnels et culturels</p>
+            <p className="text-white/80 text-sm">Nos partenaires institutionnels et culturels</p>
           </div>
 
           <div className="relative z-10 space-y-6">
