@@ -15,6 +15,7 @@ import {
   FolderOpen,
   Loader2,
 } from 'lucide-react';
+import { getImageUrl } from '@/lib/utils';
 
 interface MediaItem {
   _id: string;
@@ -232,7 +233,7 @@ export default function MediaPicker({
               className="relative group w-20 h-20 bg-gray-100 rounded-lg overflow-hidden"
             >
               <img
-                src={`/api/media/${id}`}
+                src={`/media/${id}`}
                 alt=""
                 className="w-full h-full object-cover"
                 onError={(e) => {
@@ -422,7 +423,7 @@ export default function MediaPicker({
                             >
                               {item.mimeType.startsWith('image/') ? (
                                 <img
-                                  src={item.path || item.url}
+                                  src={getImageUrl(item.path || item.url)}
                                   alt={item.alt || item.originalName}
                                   className="w-full h-full object-cover"
                                   loading="lazy"

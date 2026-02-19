@@ -1,16 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
-import { Spectacle } from '@/models';
+import { Spectacle, Media } from '@/models';
 import { decodeHtmlEntities } from '@/lib/utils';
 
-// Helper pour transformer l'image en URL utilisable
-const getImageUrl = (image?: string): string => {
-  if (!image) return '';
-  // Si c'est deja une URL complete ou un chemin absolu
-  if (image.startsWith('/') || image.startsWith('http')) return image;
-  // Sinon c'est un ID MongoDB, on le transforme en URL media
-  return `/media/${image}`;
-};
+function getCdnUrl(path: string): string {
+  if (!path) return '';
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+  const cdnUrl = 'https://cdn.totacompania.fr';
+  if (path.startsWith('/uploads/')) return cdnUrl + path.replace('/uploads/', '/');
+  return path;
+}
+
+function isObjectId(s: string): boolean {
+  return /^[0-9a-fA-F]{24}$/.test(s);
+}
 
 export async function GET(request: NextRequest) {
   try {
@@ -35,7 +38,36 @@ export async function GET(request: NextRequest) {
       .skip((page - 1) * limit)
       .limit(limit);
 
-    // Transformer les donnees pour l'admin avec les bonnes URLs d'images et decoder les entites HTML
+    // Collect all ObjectId references from image and gallery fields
+    const mediaIds: string[] = [];
+    for (const spectacle of result) {
+      const doc = spectacle.toObject();
+      if (doc.image && isObjectId(doc.image)) mediaIds.push(doc.image);
+      (doc.gallery || []).forEach((img: string) => {
+        if (isObjectId(img)) mediaIds.push(img);
+      });
+    }
+
+    // Batch resolve ObjectIds to CDN URLs
+    const mediaMap = new Map<string, string>();
+    if (mediaIds.length > 0) {
+      const uniqueIds = [...new Set(mediaIds)];
+      const mediaItems = await Media.find({ _id: { $in: uniqueIds } }).select('url path');
+      for (const item of mediaItems) {
+        const url = item.url || item.path || '';
+        mediaMap.set(item._id.toString(), getCdnUrl(url));
+      }
+    }
+
+    // Resolve an image field to a displayable URL
+    const resolveImage = (image?: string): string => {
+      if (!image) return '';
+      if (isObjectId(image)) return mediaMap.get(image) || '';
+      if (image.startsWith('/uploads/')) return getCdnUrl(image);
+      return image;
+    };
+
+    // Transform data for admin with proper image URLs and decoded HTML entities
     const spectaclesWithImages = result.map((spectacle: any) => {
       const doc = spectacle.toObject();
       return {
@@ -44,8 +76,8 @@ export async function GET(request: NextRequest) {
         title: decodeHtmlEntities(doc.title),
         subtitle: decodeHtmlEntities(doc.subtitle || ''),
         description: decodeHtmlEntities(doc.description),
-        image: getImageUrl(doc.image),
-        gallery: (doc.gallery || []).map((img: string) => getImageUrl(img)),
+        image: resolveImage(doc.image),
+        gallery: (doc.gallery || []).map((img: string) => resolveImage(img)),
         published: doc.available !== false,
       };
     });

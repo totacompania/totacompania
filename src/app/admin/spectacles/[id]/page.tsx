@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { getImageUrl } from '@/lib/utils';
-import Image from 'next/image';
 import { ArrowLeft, Save, Trash2, Plus, X, ImageIcon, FileText, ChevronDown, Check, Handshake } from 'lucide-react';
 import MediaPicker from '@/components/admin/MediaPicker';
 
@@ -306,7 +305,7 @@ export default function EditSpectacle() {
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
                 {form.gallery.map((img, index) => (
                   <div key={index} className="relative group aspect-square bg-gray-100 rounded-lg overflow-hidden">
-                    <Image src={getImageSrc(img)} alt={`Galerie ${index + 1}`} fill className="object-cover" />
+                    <img src={getImageSrc(img)} alt={`Galerie ${index + 1}`} className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                       {index > 0 && (
                         <button type="button" onClick={() => moveGalleryImage(index, index - 1)}
