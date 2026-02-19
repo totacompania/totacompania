@@ -51,7 +51,7 @@ export async function GET(request: NextRequest) {
     // Batch resolve ObjectIds to CDN URLs
     const mediaMap = new Map<string, string>();
     if (mediaIds.length > 0) {
-      const uniqueIds = [...new Set(mediaIds)];
+      const uniqueIds = Array.from(new Set(mediaIds));
       const mediaItems = await Media.find({ _id: { $in: uniqueIds } }).select('url path');
       for (const item of mediaItems) {
         const url = item.url || item.path || '';
