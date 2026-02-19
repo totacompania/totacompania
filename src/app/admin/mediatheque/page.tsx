@@ -384,7 +384,7 @@ function EditMediaModal({ media, onClose, onSave }: { media: MediaItem; onClose:
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden mb-4">
-                {isImg ? <img src={media.url} alt={media.alt || media.originalName} className="w-full h-full object-contain" /> : <div className="w-full h-full flex items-center justify-center"><File className="w-16 h-16 text-gray-400" /></div>}
+                {isImg ? <img src={getImageUrl(media.url)} alt={media.alt || media.originalName} className="w-full h-full object-contain" /> : <div className="w-full h-full flex items-center justify-center"><File className="w-16 h-16 text-gray-400" /></div>}
               </div>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between"><span className="text-gray-500">Type:</span><span>{media.mimeType}</span></div>

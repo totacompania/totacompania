@@ -26,31 +26,45 @@ export async function PUT(
   try {
     await connectDB();
     const body = await request.json();
+
+    // Build update object with only provided fields to avoid wiping data
+    const update: Record<string, unknown> = {};
+    if (body.slug !== undefined) update.slug = body.slug;
+    if (body.title !== undefined) update.title = body.title;
+    if (body.subtitle !== undefined) update.subtitle = body.subtitle;
+    if (body.description !== undefined) update.description = body.description;
+    if (body.content !== undefined || body.longDescription !== undefined) {
+      update.longDescription = body.content || body.longDescription;
+      update.content = body.content || body.longDescription;
+    }
+    if (body.image !== undefined) update.image = body.image;
+    if (body.gallery !== undefined) update.gallery = body.gallery;
+    if (body.duration !== undefined) update.duration = body.duration;
+    if (body.audience !== undefined) {
+      update.audience = body.audience;
+      update.ageRange = body.audience;
+    }
+    if (body.ageRange !== undefined) update.ageRange = body.ageRange;
+    if (body.cast !== undefined) update.cast = body.cast;
+    if (body.technicalInfo !== undefined) update.technicalInfo = body.technicalInfo;
+    if (body.videoUrl !== undefined) update.videoUrl = body.videoUrl;
+    if (body.distribution !== undefined) update.distribution = body.distribution;
+    if (body.partenaires !== undefined) update.partenaires = body.partenaires;
+    if (body.dossierUrl !== undefined) update.dossierUrl = body.dossierUrl;
+    if (body.published !== undefined) {
+      update.published = body.published;
+      update.available = body.published;
+    }
+    if (body.available !== undefined) {
+      update.available = body.available;
+      update.published = body.available;
+    }
+    if (body.featured !== undefined) update.featured = body.featured;
+    if (body.category !== undefined) update.category = body.category;
+
     const spectacle = await Spectacle.findByIdAndUpdate(
       params.id,
-      {
-        slug: body.slug,
-        title: body.title,
-        subtitle: body.subtitle,
-        description: body.description,
-        longDescription: body.content || body.longDescription,
-        content: body.content,
-        image: body.image,
-        gallery: body.gallery || [],
-        duration: body.duration,
-        audience: body.audience,
-        ageRange: body.audience || body.ageRange,
-        cast: body.cast,
-        technicalInfo: body.technicalInfo,
-        videoUrl: body.videoUrl,
-        distribution: body.distribution,
-        partenaires: body.partenaires || [],
-        dossierUrl: body.dossierUrl,
-        published: body.published,
-        available: body.published,
-        featured: body.featured,
-        category: body.category,
-      },
+      { $set: update },
       { new: true }
     );
 

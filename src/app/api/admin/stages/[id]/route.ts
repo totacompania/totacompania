@@ -31,22 +31,24 @@ export async function PUT(
     const { id } = await params;
     const body = await request.json();
 
+    // Build update object with only provided fields to avoid wiping data
+    const update: Record<string, unknown> = {};
+    if (body.title !== undefined) update.title = body.title;
+    if (body.theme !== undefined) update.theme = body.theme;
+    if (body.description !== undefined) update.description = body.description;
+    if (body.ageRange !== undefined) update.ageRange = body.ageRange;
+    if (body.startDate !== undefined) update.startDate = body.startDate;
+    if (body.endDate !== undefined) update.endDate = body.endDate;
+    if (body.location !== undefined) update.location = body.location;
+    if (body.price !== undefined) update.price = body.price;
+    if (body.maxParticipants !== undefined) update.maxParticipants = body.maxParticipants;
+    if (body.mediaId !== undefined) update.mediaId = body.mediaId;
+    if (body.published !== undefined) update.published = body.published;
+    if (body.order !== undefined) update.order = body.order;
+
     const stage = await Stage.findByIdAndUpdate(
       id,
-      {
-        title: body.title,
-        theme: body.theme,
-        description: body.description,
-        ageRange: body.ageRange,
-        startDate: body.startDate,
-        endDate: body.endDate,
-        location: body.location,
-        price: body.price,
-        maxParticipants: body.maxParticipants,
-        mediaId: body.mediaId,
-        published: body.published,
-        order: body.order,
-      },
+      { $set: update },
       { new: true }
     );
 
