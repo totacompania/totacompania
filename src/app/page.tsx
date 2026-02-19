@@ -353,7 +353,7 @@ export default function HomePage() {
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
                 <div className="mb-6">
-                  <Image src="https://cdn.totacompania.fr/2019/07/la-compagnie2.png" alt="La Compagnie" width={250} height={60} className="mb-4" />
+                  <Image src="https://tota.boris-henne.fr/uploads/2019/07/la-compagnie2.png" alt="La Compagnie" width={250} height={60} className="mb-4" />
                 </div>
                 <p className="text-gray-700 text-lg mb-6 leading-relaxed">
                   Basée au Centre Culturel Vauban à Toul, Tota Compania crée des spectacles vivants et poétiques depuis plus de 30 ans.

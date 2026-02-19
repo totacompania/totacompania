@@ -7,9 +7,9 @@ function getCdnUrl(path: string): string {
   if (!path) return '';
   if (path.startsWith('http://') || path.startsWith('https://')) return path;
   
-  const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL || 'https://cdn.totacompania.fr';
+  const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL || 'https://tota.boris-henne.fr';
   if (path.startsWith('/uploads/')) {
-    return cdnUrl + path.replace('/uploads/', '/');
+    return cdnUrl + path;
   }
   return path;
 }

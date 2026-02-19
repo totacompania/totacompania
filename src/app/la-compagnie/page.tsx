@@ -427,7 +427,7 @@ export default function LaCompagniePage() {
               viewport={{ once: true }}
               className="flex flex-col items-center justify-center mb-2"
             >
-              <Image src="https://cdn.totacompania.fr/2019/07/partenaires2.png" alt="Ils nous font confiance" width={280} height={60} className="mb-2" />
+              <Image src="https://tota.boris-henne.fr/uploads/2019/07/partenaires2.png" alt="Ils nous font confiance" width={280} height={60} className="mb-2" />
             </motion.div>
             <p className="text-white/80 text-sm">Nos partenaires institutionnels et culturels</p>
           </div>
