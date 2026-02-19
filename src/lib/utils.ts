@@ -39,13 +39,13 @@ export function decodeHtmlEntities(text: string): string {
     '&quot;': '"',
     '&#039;': "'",
     '&apos;': "'",
-    '&rsquo;': "'",
-    '&lsquo;': "'",
-    '&rdquo;': '"',
-    '&ldquo;': '"',
-    '&ndash;': '–',
-    '&mdash;': '—',
-    '&hellip;': '…',
+    '&rsquo;': "\u2019",
+    '&lsquo;': "\u2018",
+    '&rdquo;': "\u201D",
+    '&ldquo;': "\u201C",
+    '&ndash;': '\u2013',
+    '&mdash;': '\u2014',
+    '&hellip;': '\u2026',
     '&nbsp;': ' ',
   };
 
@@ -81,24 +81,35 @@ export function getYouTubeEmbedUrl(url: string): string | null {
 }
 
 /**
- * Get the full URL for an image, using NAS for uploads
- * @param path - The image path (e.g., '/uploads/2024/08/image.png')
- * @returns The full URL pointing to NAS for uploads
+ * Check if a string looks like a MongoDB ObjectId (24-char hex)
+ */
+function isObjectId(str: string): boolean {
+  return /^[0-9a-fA-F]{24}$/.test(str);
+}
+
+/**
+ * Get the full URL for an image.
+ * Handles: ObjectIds (media proxy), absolute URLs, relative upload paths.
  */
 export function getImageUrl(path: string): string {
   if (!path) return '';
+
+  // If it's a MongoDB ObjectId, use the media proxy route
+  if (isObjectId(path)) {
+    return '/media/' + path;
+  }
 
   // If it's already an absolute URL, return as is
   if (path.startsWith('http://') || path.startsWith('https://')) {
     return path;
   }
 
-  // Use NAS URL for uploads (files are stored on NAS, not CDN)
-  const nasUrl = 'https://tota.boris-henne.fr';
+  // Use CDN URL for uploads (OVH CDN hosts the actual files)
+  const cdnUrl = 'https://cdn.totacompania.fr';
 
-  // If path starts with /uploads, use NAS URL
+  // If path starts with /uploads, use CDN URL
   if (path.startsWith('/uploads/')) {
-    return nasUrl + path;
+    return cdnUrl + path.replace('/uploads/', '/');
   }
 
   return path;

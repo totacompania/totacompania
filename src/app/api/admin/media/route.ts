@@ -93,10 +93,9 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// Upload vers le NAS via proxy (pour Vercel/Production)
+// Upload files to NAS via proxy, then save media entries in our own DB (Atlas)
 async function uploadViaNasProxy(files: File[]): Promise<unknown[]> {
   const formData = new FormData();
-  
   for (const file of files) {
     formData.append('files', file);
   }
@@ -110,24 +109,51 @@ async function uploadViaNasProxy(files: File[]): Promise<unknown[]> {
   });
 
   if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to upload to NAS');
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error((errorData as Record<string, string>).error || 'Failed to upload to NAS');
   }
 
-  return response.json();
+  const nasResults = await response.json() as Array<{
+    filename: string;
+    originalName: string;
+    mimeType: string;
+    size: number;
+    path: string;
+    url: string;
+  }>;
+
+  // Save media entries in our DB (Atlas) so they appear in the admin
+  await connectDB();
+  const results = [];
+  for (const item of nasResults) {
+    const media = new Media({
+      filename: item.filename,
+      originalName: item.originalName,
+      mimeType: item.mimeType,
+      size: item.size,
+      path: item.path,
+      url: item.path, // Store relative path, resolved by getImageUrl/getCdnUrl
+      folder: '/',
+      category: 'general',
+      tags: ['upload'],
+      showInGallery: false,
+    });
+    await media.save();
+    results.push(media);
+  }
+
+  return results;
 }
 
 // Upload local (pour le NAS/Dev)
 async function uploadLocally(files: File[]): Promise<unknown[]> {
-  // Creer le dossier avec la date (YYYY/MM)
   const now = new Date();
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, '0');
   const dateFolder = `${year}/${month}`;
-  
+
   const uploadDir = join(process.cwd(), 'public', 'uploads', dateFolder);
 
-  // Creer le dossier s'il n'existe pas
   if (!existsSync(uploadDir)) {
     await mkdir(uploadDir, { recursive: true });
   }
@@ -138,7 +164,6 @@ async function uploadLocally(files: File[]): Promise<unknown[]> {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Generer un nom de fichier unique
     const timestamp = Date.now();
     const sanitizedName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
     const baseName = sanitizedName.substring(0, sanitizedName.lastIndexOf('.')) || sanitizedName;
@@ -146,13 +171,10 @@ async function uploadLocally(files: File[]): Promise<unknown[]> {
     const filename = `${baseName}_${timestamp}.${extension}`;
     const filepath = join(uploadDir, filename);
 
-    // Ecrire le fichier
     await writeFile(filepath, buffer);
 
-    // Chemin relatif pour la base de donnees
     const relativePath = `/uploads/${dateFolder}/${filename}`;
 
-    // Sauvegarder en base de donnees
     const media = new Media({
       filename,
       originalName: file.name,
@@ -184,11 +206,9 @@ export async function POST(request: NextRequest) {
     let results;
 
     if (isVercel) {
-      // En production (Vercel), envoyer vers le NAS
       console.log('Production mode: uploading via NAS proxy');
       results = await uploadViaNasProxy(files);
     } else {
-      // En dev (NAS), ecrire localement
       console.log('Dev mode: uploading locally');
       results = await uploadLocally(files);
     }
