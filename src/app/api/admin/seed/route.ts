@@ -128,7 +128,7 @@ const settings = [
         alias: 'Théâtre du Moulin'
       },
       social: {
-        facebook: 'https://www.facebook.com/totacompania',
+        facebook: 'https://www.facebook.com/tota.compania.9',
         instagram: 'https://www.instagram.com/totacompania'
       }
     }),

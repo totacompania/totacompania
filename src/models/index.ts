@@ -87,7 +87,7 @@ export interface IEvent extends Document {
   location: string;
   price?: string;
   ageRange?: string;
-  type: 'spectacle' | 'stage' | 'inscription' | 'residence';
+  type: 'spectacle' | 'stage' | 'inscription' | 'residence' | 'ag';
   address?: string;
   endTime?: string;
   ticketUrl?: string;
@@ -109,7 +109,7 @@ const EventSchema = new Schema<IEvent>({
   location: { type: String, required: true },
   price: String,
   ageRange: String,
-  type: { type: String, enum: ['spectacle', 'stage', 'inscription', 'residence'], required: true },
+  type: { type: String, enum: ['spectacle', 'stage', 'inscription', 'residence', 'ag'], required: true },
   address: String,
   endTime: String,
   ticketUrl: String,

@@ -21,6 +21,7 @@ const eventTypes: Record<string, { label: string; color: string; icon: typeof Ca
   stage: { label: 'Stage', color: '#f02822', icon: GraduationCap },
   inscription: { label: 'Inscription', color: '#22c55e', icon: Calendar },
   residence: { label: 'Résidence', color: '#6a3acc', icon: Home },
+  ag: { label: 'AG', color: '#f59e0b', icon: Calendar },
 };
 
 // Type pour un evenement depuis l'API
@@ -35,7 +36,7 @@ interface EventData {
   location: string;
   price?: string;
   ageRange?: string;
-  type: 'spectacle' | 'stage' | 'inscription' | 'residence';
+  type: string;
   image?: string;
   ticketUrl?: string;
   externalUrl?: string;

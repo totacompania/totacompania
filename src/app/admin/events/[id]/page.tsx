@@ -10,7 +10,8 @@ const eventTypes = [
   { value: 'spectacle', label: 'Spectacle' },
   { value: 'stage', label: 'Stage' },
   { value: 'inscription', label: 'Inscription' },
-  { value: 'résidence', label: 'Résidence' }
+  { value: 'residence', label: 'Résidence' },
+  { value: 'ag', label: 'AG' }
 ];
 
 export default function EditEvent() {

@@ -9,7 +9,7 @@ import Navigation from '@/components/layout/Navigation';
 import Footer from '@/components/layout/Footer';
 import ZigzagSeparator from '@/components/ui/ZigzagSeparator';
 import { AuroraHero } from '@/components/ui/AuroraBackground';
-import { Theater, Clock, Users, ChevronRight, Sparkles, ArrowRight, Loader2, Handshake } from 'lucide-react';
+import { Theater, Clock, Users, ChevronRight, Sparkles, ArrowRight, Loader2 } from 'lucide-react';
 
 interface Spectacle {
   _id: string;
@@ -145,11 +145,6 @@ export default function SpectaclesPage() {
                             <span className="flex items-center gap-1"><Users className="w-4 h-4" />{getAudience(spectacle)}</span>
                           </div>
                           {spectacle.partenaires && spectacle.partenaires.length > 0 && (
-                            <div className="flex items-center gap-2 text-xs text-gray-400 mb-3 flex-wrap">
-                              <Handshake className="w-3.5 h-3.5 text-[#844cfc]/60 flex-shrink-0" />
-                              <span className="truncate">{spectacle.partenaires.join(', ')}</span>
-                            </div>
-                          )}
                           <div className="flex items-center justify-end">
                             <span className="flex items-center gap-1 text-[#844cfc] font-medium text-sm group-hover:gap-2 transition-all">Découvrir <ChevronRight className="w-4 h-4" /></span>
                           </div>
