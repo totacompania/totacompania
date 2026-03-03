@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { getImageUrl } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -458,7 +459,7 @@ export default function EcolePage() {
               <div key={setIndex} className="flex gap-4 px-2">
                 {galleryImages.map((img) => (
                   <div key={`${setIndex}-${img._id}`} className="flex-shrink-0 w-64 h-48 relative overflow-hidden">
-                    <Image src={img.url} alt={img.alt || 'Galerie Tota Compania'} fill className="object-cover hover:scale-110 transition-transform duration-500" />
+                    <Image src={getImageUrl(img.url)} alt={img.alt || 'Galerie Tota Compania'} fill className="object-cover hover:scale-110 transition-transform duration-500" />
                   </div>
                 ))}
               </div>

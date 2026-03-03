@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { getImageUrl } from '@/lib/utils';
 import { Image as ImageIcon, Upload, Trash2, Copy, Check, X } from 'lucide-react';
 
 interface MediaItem {
@@ -170,7 +171,7 @@ export default function GalleryAdmin() {
             >
               <div className="aspect-square bg-gray-100">
                 <img
-                  src={item.url}
+                  src={getImageUrl(item.url)}
                   alt={item.alt || item.originalName}
                   className="w-full h-full object-cover"
                 />

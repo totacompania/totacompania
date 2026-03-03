@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { getImageUrl } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -590,7 +591,7 @@ function EditPartnerModal({
                         }}
                       >
                         <Image
-                          src={item.url}
+                          src={getImageUrl(item.url)}
                           alt={item.alt || item.originalName}
                           fill
                           className="object-cover"

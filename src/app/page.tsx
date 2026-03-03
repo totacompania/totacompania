@@ -440,7 +440,7 @@ export default function HomePage() {
           <section className="relative w-full h-[50vh] md:h-[60vh] lg:h-[70vh] overflow-hidden">
             <AnimatePresence mode="wait">
               <motion.div key={currentSlide} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.7 }} className="absolute inset-0">
-                <Image src={galleryImages[currentSlide].url} alt={galleryImages[currentSlide].alt || 'Galerie Tota Compania'} fill className="object-cover" priority />
+                <Image src={getImageUrl(galleryImages[currentSlide].url)} alt={galleryImages[currentSlide].alt || 'Galerie Tota Compania'} fill className="object-cover" priority />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f]/60 via-transparent to-[#844cfc]/10" />
               </motion.div>
             </AnimatePresence>

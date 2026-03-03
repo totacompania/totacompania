@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { getImageUrl } from '@/lib/utils';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -338,7 +339,7 @@ export default function EditFestival() {
                       }`}
                     >
                       <Image
-                        src={item.url}
+                        src={getImageUrl(item.url)}
                         alt={item.alt || item.originalName}
                         fill
                         className="object-cover"
