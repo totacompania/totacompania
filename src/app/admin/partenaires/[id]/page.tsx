@@ -233,7 +233,7 @@ export default function EditPartner() {
 
           {/* Order */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Ordre d'affichage</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Ordre d&apos;affichage</label>
             <input
               type="number"
               value={form.order}

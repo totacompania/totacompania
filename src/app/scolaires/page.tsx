@@ -103,7 +103,7 @@ export default function ScolairesPage() {
               Interventions Scolaires
             </h1>
             <p className="text-xl md:text-2xl text-[#dbcbff] max-w-2xl mx-auto">
-              Le théâtre à l'école, un outil pédagogique enrichissant
+              Le théâtre à l&apos;école, un outil pédagogique enrichissant
             </p>
           </motion.div>
         </div>

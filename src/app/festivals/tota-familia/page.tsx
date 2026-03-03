@@ -88,7 +88,7 @@ export default function TotaFamiliaPage() {
               <div className="prose prose-lg text-gray-600">
                 <p>
                   Tota Familia est un festival itinerant qui parcourt la Lorraine
-                  pendant l'ete. Notre objectif : proposer des spectacles de qualite
+                  pendant l&apos;ete. Notre objectif : proposer des spectacles de qualite
                   accessibles à tous, du plus petit au plus grand.
                 </p>
                 <p>
@@ -98,7 +98,7 @@ export default function TotaFamiliaPage() {
                   un moment privilegie ensemble.
                 </p>
                 <p>
-                  Chaque edition est l'occasion de découvrir de nouvelles compagnies,
+                  Chaque edition est l&apos;occasion de découvrir de nouvelles compagnies,
                   de nouveaux univers artistiques, dans des lieux souvent insolites
                   et toujours accueillants.
                 </p>
@@ -148,7 +148,7 @@ export default function TotaFamiliaPage() {
                 Plaisir partage
               </h3>
               <p className="text-gray-600 text-sm">
-                Des spectacles qui parlent autant aux enfants qu'aux adultes.
+                Des spectacles qui parlent autant aux enfants qu&apos;aux adultes.
               </p>
             </motion.div>
 

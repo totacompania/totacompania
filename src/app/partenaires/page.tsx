@@ -239,7 +239,7 @@ export default function PartenairesPage() {
               </p>
 
               <p className="text-kraft-600 mb-8 leading-relaxed">
-                N'hesitez pas a nous contacter pour discuter des possibilites
+                N&apos;hesitez pas a nous contacter pour discuter des possibilites
                 de collaboration.
               </p>
 

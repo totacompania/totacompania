@@ -69,7 +69,7 @@ export default function AdminDashboard() {
             Tableau de bord
           </h1>
           <p className="text-gray-600">
-            Bienvenue sur le panneau d'administration de Tota Compania
+            Bienvenue sur le panneau d&apos;administration de Tota Compania
           </p>
         </div>
         <div className="flex gap-2">

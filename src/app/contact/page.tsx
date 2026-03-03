@@ -247,7 +247,7 @@ export default function ContactPage() {
                         <option value="">Sélectionnez un sujet</option>
                         <option value="programmation">Demande de programmation</option>
                         <option value="atelier">Atelier / Intervention</option>
-                        <option value="information">Demande d'informations</option>
+                        <option value="information">Demande d&apos;informations</option>
                         <option value="inscription">Inscription école de théâtre</option>
                         <option value="autre">Autre</option>
                       </select>

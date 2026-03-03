@@ -335,7 +335,7 @@ function EditEventModal({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between p-4 border-b">
-          <h2 className="text-lg font-bold">Editer l'evenement</h2>
+          <h2 className="text-lg font-bold">Editer l&apos;evenement</h2>
           <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg">
             <X className="w-5 h-5" />
           </button>
@@ -410,7 +410,7 @@ function EditEventModal({
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Tranche d'age
+                  Tranche d&apos;age
                 </label>
                 <input
                   type="text"
@@ -546,7 +546,7 @@ function EditEventModal({
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Image de l'evenement
+                Image de l&apos;evenement
               </label>
               <div className="flex items-start gap-4">
                 {form.image ? (

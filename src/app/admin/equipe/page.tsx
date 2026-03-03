@@ -223,7 +223,7 @@ export default function EquipeAdmin() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-2xl font-display font-bold text-gray-900">Equipe</h1>
-          <p className="text-gray-600">{total} membre(s) - Gerez les membres de l'equipe et les artistes</p>
+          <p className="text-gray-600">{total} membre(s) - Gerez les membres de l&apos;equipe et les artistes</p>
         </div>
         <Link
           href="/admin/equipe/new"

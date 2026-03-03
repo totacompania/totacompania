@@ -105,7 +105,7 @@ export default function ResidencesPage() {
             <p className="text-lg text-gray-700 leading-relaxed">
               Le Centre Culturel Vauban accueille régulièrement des artistes en residence
               pour leur permettre de développer leurs projets creatifs. Ces residences
-              sont l'occasion de rencontres privilegiees avec nos publics a travers des
+              sont l&apos;occasion de rencontres privilegiees avec nos publics a travers des
               temps de partage, des rendus de travail et des echanges.
             </p>
           </motion.div>
@@ -192,7 +192,7 @@ export default function ResidencesPage() {
                 Proposer un projet de residence
               </h3>
               <p className="text-gray-600 mb-6">
-                Vous etes artiste et souhaitez beneficier d'un temps de residence
+                Vous etes artiste et souhaitez beneficier d&apos;un temps de residence
                 au Centre Culturel Vauban ? Contactez-nous pour etudier votre projet.
               </p>
               {contactInfo && (

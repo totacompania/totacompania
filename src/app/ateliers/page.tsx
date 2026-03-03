@@ -116,7 +116,7 @@ export default function AteliersPage() {
                 Depuis plus de 30 ans, Tota Compania transmet sa passion du théâtre à travers des ateliers adaptés à tous les âges et tous les niveaux.
               </p>
               <p className="text-gray-700">
-                Notre équipe de professionnels accompagne chaque participant dans sa découverte du jeu théâtral, de l'expression corporelle et de la création collective.
+                Notre équipe de professionnels accompagne chaque participant dans sa découverte du jeu théâtral, de l&apos;expression corporelle et de la création collective.
               </p>
             </motion.div>
           </div>

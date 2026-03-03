@@ -53,11 +53,11 @@ export default function PresentationPage() {
                 <p>
                   Notre répertoire mêle théâtre, conte, marionnettes et musique.
                   Nous créons des spectacles qui parlent à tous, qui font rire et réfléchir,
-                  qui touchent le coeur et l'esprit.
+                  qui touchent le coeur et l&apos;esprit.
                 </p>
                 <p>
                   Au fil des années, nous avons developpe un savoir-faire reconnu dans
-                  l'animation d'ateliers artistiques et la création de spectacles sur mesure
+                  l&apos;animation d&apos;ateliers artistiques et la création de spectacles sur mesure
                   pour les collectivites et les événements culturels.
                 </p>
               </div>
@@ -167,7 +167,7 @@ export default function PresentationPage() {
               Envie de nous rencontrer ?
             </h2>
             <p className="text-white/80 max-w-xl mx-auto mb-6">
-              N'hesitez pas a nous contacter pour en savoir plus sur notre compagnie.
+              N&apos;hesitez pas a nous contacter pour en savoir plus sur notre compagnie.
             </p>
             <Link
               href="/contact"

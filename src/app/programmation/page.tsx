@@ -250,7 +250,7 @@ export default function ProgrammationPage() {
                 <p className="text-gray-600 text-lg">Aucun evenement trouve.</p>
                 {allEvents.length === 0 && (
                   <p className="text-gray-400 text-sm mt-2">
-                    Aucun evenement n'a ete ajoute dans l'administration.
+                    Aucun evenement n&apos;a ete ajoute dans l&apos;administration.
                   </p>
                 )}
               </div>
@@ -395,7 +395,7 @@ export default function ProgrammationPage() {
                 Réservations & Informations
               </h2>
               <p className="text-white/60 mb-6 max-w-2xl mx-auto">
-                Pour réserver vos places ou obtenir plus d'informations sur nos événements, contactez-nous directement.
+                Pour réserver vos places ou obtenir plus d&apos;informations sur nos événements, contactez-nous directement.
               </p>
               {contactInfo && (
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8 text-white/80">

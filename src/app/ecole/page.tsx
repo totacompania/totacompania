@@ -196,7 +196,7 @@ export default function EcolePage() {
               TOTA COMPANIA
             </h1>
             <p className="font-title text-2xl md:text-3xl text-[#dbcbff]">
-              L'École de Théâtre
+              L&apos;École de Théâtre
             </p>
 
             <motion.div
@@ -226,7 +226,7 @@ export default function EcolePage() {
             className="max-w-3xl mx-auto text-center"
           >
             <p className="text-xl text-gray-700 leading-relaxed">
-              Tota Compania c'est aussi plus de <strong className="text-[#844cfc]">80 amateurs</strong> encadrés par une équipe professionnelle,
+              Tota Compania c&apos;est aussi plus de <strong className="text-[#844cfc]">80 amateurs</strong> encadrés par une équipe professionnelle,
               bénévoles lors des événements, des stages... Une véritable famille du théâtre !
             </p>
           </motion.div>
@@ -347,7 +347,7 @@ export default function EcolePage() {
               <h2 className="font-title text-3xl" style={{ color: '#f02822' }}>Modalités</h2>
             </div>
             <p className="text-gray-600 mt-4 max-w-xl mx-auto">
-              Tout ce qu'il faut savoir pour rejoindre l'école de théâtre
+              Tout ce qu&apos;il faut savoir pour rejoindre l&apos;école de théâtre
             </p>
           </motion.div>
 
@@ -437,7 +437,7 @@ export default function EcolePage() {
         <div className="container-custom py-20 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <h2 className="font-title text-3xl md:text-4xl text-white mb-6">
-              Rejoignez l'aventure théâtrale !
+              Rejoignez l&apos;aventure théâtrale !
             </h2>
             <p className="text-[#dbcbff] max-w-xl mx-auto mb-8">
               Découvrez le plaisir du jeu, l expression corporelle et vocale,

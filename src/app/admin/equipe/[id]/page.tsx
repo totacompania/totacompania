@@ -303,7 +303,7 @@ export default function EditTeamMember() {
                 >
                   <option value="équipe">En Coulisses (Équipe technique)</option>
                   <option value="artiste">Sur Scene (Artistes)</option>
-                  <option value="conseil">Conseil d'Administration</option>
+                  <option value="conseil">Conseil d&apos;Administration</option>
                 </select>
               </div>
               <button
@@ -333,7 +333,7 @@ export default function EditTeamMember() {
 
           {/* Order */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Ordre d'affichage</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Ordre d&apos;affichage</label>
             <input
               type="number"
               value={form.order}

@@ -132,7 +132,7 @@ export default function NewsletterForm({ variant = 'default', className = '' }: 
             ) : (
               <>
                 <Mail className="w-4 h-4" />
-                S'inscrire
+                S&apos;inscrire
               </>
             )}
           </button>
@@ -224,7 +224,7 @@ export default function NewsletterForm({ variant = 'default', className = '' }: 
                 ) : (
                   <>
                     <Send className="w-5 h-5" />
-                    Je m'inscris
+                    Je m&apos;inscris
                   </>
                 )}
               </button>
