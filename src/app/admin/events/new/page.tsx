@@ -66,7 +66,7 @@ export default function NewEvent() {
         </Link>
         <div>
           <h1 className="text-2xl font-display font-bold text-gray-900">Nouvel événement</h1>
-          <p className="text-gray-600">Ajouter une date a l'agenda</p>
+          <p className="text-gray-600">Ajouter une date a l&apos;agenda</p>
         </div>
       </div>
 
@@ -112,7 +112,7 @@ export default function NewEvent() {
           {/* Type et Public */}
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Type d'événement</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Type d&apos;événement</label>
               <select
                 value={form.type}
                 onChange={(e) => setForm({ ...form, type: e.target.value })}
@@ -230,7 +230,7 @@ export default function NewEvent() {
 
           {/* Lien externe */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Lien externe (plus d'infos)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Lien externe (plus d&apos;infos)</label>
             <input
               type="url"
               value={form.externalUrl}

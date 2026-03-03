@@ -140,7 +140,7 @@ export default function SpectaclePage() {
             <h1 className="font-title text-3xl text-theater-brown mb-4">
               Spectacle non trouvé
             </h1>
-            <p className="text-kraft-600 mb-6">Ce spectacle n'existe pas ou n'est plus disponible.</p>
+            <p className="text-kraft-600 mb-6">Ce spectacle n&apos;existe pas ou n&apos;est plus disponible.</p>
             <Link href="/spectacles" className="btn-primary">
               <ArrowLeft className="mr-2 w-4 h-4" />
               Retour aux spectacles

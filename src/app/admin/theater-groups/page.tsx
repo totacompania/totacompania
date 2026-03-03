@@ -299,7 +299,7 @@ export default function TheaterGroupsAdmin() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Tranche d'age *
+                      Tranche d&apos;age *
                     </label>
                     <input
                       type="text"

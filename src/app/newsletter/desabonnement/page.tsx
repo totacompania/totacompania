@@ -57,7 +57,7 @@ function UnsubscribeContent() {
         </p>
         <Link href="/" className="btn-primary">
           <Home className="w-4 h-4 mr-2" />
-          Retour a l'accueil
+          Retour a l&apos;accueil
         </Link>
       </div>
     );
@@ -94,7 +94,7 @@ function UnsubscribeContent() {
           )}
           <Link href="/" className="btn-primary">
             <Home className="w-4 h-4 mr-2" />
-            Retour a l'accueil
+            Retour a l&apos;accueil
           </Link>
         </motion.div>
       )}
@@ -113,7 +113,7 @@ function UnsubscribeContent() {
           <p className="text-gray-600 mb-8">{message}</p>
           <Link href="/" className="btn-primary">
             <Home className="w-4 h-4 mr-2" />
-            Retour a l'accueil
+            Retour a l&apos;accueil
           </Link>
         </motion.div>
       )}

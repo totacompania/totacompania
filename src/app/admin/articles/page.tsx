@@ -25,7 +25,7 @@ export default function ArticlesAdmin() {
         <h2 className="text-xl font-bold text-gray-700 mb-2">Fonctionnalité à venir</h2>
         <p className="text-gray-500 max-w-md mx-auto">
           La gestion des articles sera disponible dans une prochaine version.
-          Pour l'instant, concentrez-vous sur les spectacles et les événements.
+          Pour l&apos;instant, concentrez-vous sur les spectacles et les événements.
         </p>
         <Link
           href="/admin"

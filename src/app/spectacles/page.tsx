@@ -145,9 +145,10 @@ export default function SpectaclesPage() {
                             <span className="flex items-center gap-1"><Users className="w-4 h-4" />{getAudience(spectacle)}</span>
                           </div>
                           {spectacle.partenaires && spectacle.partenaires.length > 0 && (
-                          <div className="flex items-center justify-end">
-                            <span className="flex items-center gap-1 text-[#844cfc] font-medium text-sm group-hover:gap-2 transition-all">Découvrir <ChevronRight className="w-4 h-4" /></span>
-                          </div>
+                            <div className="flex items-center justify-end">
+                              <span className="flex items-center gap-1 text-[#844cfc] font-medium text-sm group-hover:gap-2 transition-all">Découvrir <ChevronRight className="w-4 h-4" /></span>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </Link>
@@ -166,9 +167,9 @@ export default function SpectaclesPage() {
           <div className="container-custom py-20 text-center">
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
               <Sparkles className="w-12 h-12 text-[#dbcbff] mx-auto mb-4" />
-              <h2 className="font-title text-3xl md:text-4xl text-white mb-4">Envie d'accueillir un spectacle ?</h2>
+              <h2 className="font-title text-3xl md:text-4xl text-white mb-4">Envie d&apos;accueillir un spectacle ?</h2>
               <p className="text-white/60 mb-8 max-w-2xl mx-auto">
-                Nos spectacles s'adaptent à tous les lieux : théâtres, écoles, médiathèques, festivals... Contactez-nous pour en savoir plus.
+                Nos spectacles s&apos;adaptent à tous les lieux : théâtres, écoles, médiathèques, festivals... Contactez-nous pour en savoir plus.
               </p>
               <Link href="/contact" className="btn-primary inline-flex items-center gap-2">
                 Nous contacter <ArrowRight className="w-5 h-5" />

@@ -128,7 +128,7 @@ export default function LaCompagniePage() {
               La Compagnie
             </h1>
             <p className="text-xl text-[#dbcbff] max-w-2xl mx-auto">
-              Découvrez l'équipe passionnée qui fait vivre Tota Compania
+              Découvrez l&apos;équipe passionnée qui fait vivre Tota Compania
             </p>
           </motion.div>
         </div>
@@ -235,7 +235,7 @@ export default function LaCompagniePage() {
                 <Users className="w-7 h-7" />
               </div>
               <h2 className="font-title text-3xl text-white">En Coulisses...</h2>
-              <p className="text-white/80 mt-2">L'équipe technique et administrative</p>
+              <p className="text-white/80 mt-2">L&apos;équipe technique et administrative</p>
             </motion.div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -330,7 +330,7 @@ export default function LaCompagniePage() {
               <div className="inline-flex items-center justify-center w-14 h-14 bg-[#6a3acc] text-white mb-4">
                 <Award className="w-7 h-7" />
               </div>
-              <h2 className="font-title text-3xl text-white">Conseil d'Administration</h2>
+              <h2 className="font-title text-3xl text-white">Conseil d&apos;Administration</h2>
             </motion.div>
 
             <div className="max-w-5xl mx-auto">
@@ -399,7 +399,7 @@ export default function LaCompagniePage() {
 
             <div className="card p-8">
               <p className="text-gray-600 leading-relaxed text-lg mb-6">
-                Tota Compania c'est aussi plus de <span className="font-bold">80 amateurs</span> encadrés
+                Tota Compania c&apos;est aussi plus de <span className="font-bold">80 amateurs</span> encadrés
                 par une équipe professionnelle, benevoles lors des événements, des stages...
               </p>
 

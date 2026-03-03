@@ -148,7 +148,7 @@ export default function EditEvent() {
             <ArrowLeft className="w-5 h-5" />
           </Link>
           <div>
-            <h1 className="text-2xl font-display font-bold text-gray-900">Modifier l'evenement</h1>
+            <h1 className="text-2xl font-display font-bold text-gray-900">Modifier l&apos;evenement</h1>
             <p className="text-gray-600">{form.title}</p>
           </div>
         </div>
@@ -212,7 +212,7 @@ export default function EditEvent() {
           {/* Type et Public */}
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Type d'evenement</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Type d&apos;evenement</label>
               <select
                 value={form.type}
                 onChange={(e) => setForm({ ...form, type: e.target.value })}
@@ -330,7 +330,7 @@ export default function EditEvent() {
 
           {/* Lien externe */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Lien externe (plus d'infos)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Lien externe (plus d&apos;infos)</label>
             <input
               type="url"
               value={form.externalUrl}

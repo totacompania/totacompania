@@ -70,7 +70,7 @@ export default function FestivalsPage() {
               Nos Festivals
             </h1>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Découvrez les événements que nous organisons tout au long de l'année.
+              Découvrez les événements que nous organisons tout au long de l&apos;année.
             </p>
           </motion.div>
         </div>
@@ -140,7 +140,7 @@ export default function FestivalsPage() {
               Participer a nos festivals
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto mb-6">
-              Vous etes artiste et souhaitez vous produire lors d'un de nos festivals ?
+              Vous etes artiste et souhaitez vous produire lors d&apos;un de nos festivals ?
               Ou vous souhaitez devenir benevole ? Contactez-nous !
             </p>
             <Link href="/contact" className="btn-primary">

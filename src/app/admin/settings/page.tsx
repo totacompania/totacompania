@@ -398,7 +398,7 @@ export default function SettingsPage() {
             <Settings className="w-7 h-7 text-[#844cfc]" />
             Parametres
           </h1>
-          <p className="text-gray-600 mt-1">Gerez les contenus et l'apparence du site</p>
+          <p className="text-gray-600 mt-1">Gerez les contenus et l&apos;apparence du site</p>
         </div>
       </div>
 
@@ -482,7 +482,7 @@ export default function SettingsPage() {
               >
                 <div className="space-y-4">
                   <p className="text-sm text-gray-500 bg-gray-50 p-3 rounded-lg">
-                    Ces textes apparaissent sur la page "La Compagnie" (Qui sommes-nous).
+                    Ces textes apparaissent sur la page &quot;La Compagnie&quot; (Qui sommes-nous).
                   </p>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Introduction</label>
@@ -545,11 +545,11 @@ export default function SettingsPage() {
               >
                 <div className="space-y-4">
                   <p className="text-sm text-gray-500 bg-gray-50 p-3 rounded-lg">
-                    Ces chiffres sont affiches sur la page d'accueil dans la section "La Compagnie".
+                    Ces chiffres sont affiches sur la page d&apos;accueil dans la section &quot;La Compagnie&quot;.
                   </p>
                   <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div className="bg-[#844cfc]/5 p-4 rounded-lg">
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Annees d'experience</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Annees d&apos;experience</label>
                       <input
                         type="text"
                         value={companyStats.yearsExperience}
@@ -608,7 +608,7 @@ export default function SettingsPage() {
               >
                 <div className="space-y-6">
                   <p className="text-sm text-gray-500 bg-gray-50 p-3 rounded-lg">
-                    Ces informations apparaissent dans la section "Modalites" de la page Ecole de Theatre.
+                    Ces informations apparaissent dans la section &quot;Modalites&quot; de la page Ecole de Theatre.
                   </p>
 
                   {theaterModalites.map((modalite, modaliteIndex) => (

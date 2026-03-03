@@ -26,7 +26,7 @@ export default function RencartsPage() {
               Tous les festivals
             </Link>
             <h1 className="font-display text-4xl md:text-5xl font-bold mb-4">
-              Festival Renc'Arts
+              Festival Renc&apos;Arts
             </h1>
             <p className="text-xl text-gray-300 max-w-2xl">
               Le rendez-vous incontournable des arts de la rue en Lorraine.
@@ -87,17 +87,17 @@ export default function RencartsPage() {
               </h2>
               <div className="prose prose-lg text-gray-600">
                 <p>
-                  Le Festival Renc'Arts est né de notre volonté de créer un espace
+                  Le Festival Renc&apos;Arts est né de notre volonté de créer un espace
                   de rencontres entre artistes et public. Depuis sa creation, il est
                   devenu un rendez-vous incontournable de la vie culturelle lunevilloise.
                 </p>
                 <p>
                   Pendant deux jours, la ville se transforme en scène a ciel ouvert.
                   Théâtre de rue, musique, conte, cirque... Tous les arts vivants
-                  s'invitent dans l'espace public pour le plus grand bonheur des spectateurs.
+                  s&apos;invitent dans l&apos;espace public pour le plus grand bonheur des spectateurs.
                 </p>
                 <p>
-                  Gratuit et accessible à tous, le festival met un point d'honneur
+                  Gratuit et accessible à tous, le festival met un point d&apos;honneur
                   à proposer une programmation de qualité dans une ambiance conviviale
                   et festive.
                 </p>

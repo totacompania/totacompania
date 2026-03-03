@@ -128,7 +128,7 @@ export default function StagesPage() {
             <p className="text-xl text-gray-700 leading-relaxed">
               Pendant les vacances scolaires, Tota Compania propose des stages de théâtre
               pour les enfants et adolescents. Une semaine pour découvrir le jeu théâtral,
-              la narration, l'improvisation et le travail en groupe, le tout encadré par
+              la narration, l&apos;improvisation et le travail en groupe, le tout encadré par
               des professionnels du spectacle vivant.
             </p>
           </motion.div>
@@ -183,7 +183,7 @@ export default function StagesPage() {
                       </div>
                       <div className="flex-1">
                         <h3 className="font-title text-2xl">{stage.title}</h3>
-                        {stage.theme && <p className="text-[#844cfc] font-title mt-1 italic">"{stage.theme}"</p>}
+                        {stage.theme && <p className="text-[#844cfc] font-title mt-1 italic">&quot;{stage.theme}&quot;</p>}
                         {stage.description && <p className="text-gray-600 mt-3">{stage.description}</p>}
                         <div className="mt-4 space-y-2 text-gray-600">
                           {stage.ageRange && (

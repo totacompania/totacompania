@@ -203,7 +203,7 @@ export default function EditStage() {
 
           {/* Age Range */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Tranche d'age *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Tranche d&apos;age *</label>
             <input
               type="text"
               value={form.ageRange}
@@ -286,7 +286,7 @@ export default function EditStage() {
 
           {/* Order */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Ordre d'affichage</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Ordre d&apos;affichage</label>
             <input
               type="number"
               value={form.order}

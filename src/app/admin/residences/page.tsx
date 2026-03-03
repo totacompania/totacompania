@@ -72,7 +72,7 @@ export default function ResidencesAdmin() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-2xl font-display font-bold text-gray-900">Residences artistiques</h1>
-          <p className="text-gray-600">Gérez les residences d'artistes</p>
+          <p className="text-gray-600">Gérez les residences d&apos;artistes</p>
         </div>
         <Link
           href="/admin/residences/new"
