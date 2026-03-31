@@ -6,7 +6,7 @@ import { join } from 'path';
 import { existsSync } from 'fs';
 
 // Configuration pour le proxy d'upload vers le NAS
-const NAS_UPLOAD_URL = process.env.NAS_UPLOAD_URL || 'https://tota.boris-henne.fr/api/upload-proxy';
+const NAS_UPLOAD_URL = process.env.NAS_UPLOAD_URL || '/api/upload-proxy';
 const UPLOAD_PROXY_TOKEN = process.env.UPLOAD_PROXY_TOKEN || 'tota-upload-secret-2024';
 
 // Detecter si on est sur Vercel (production)

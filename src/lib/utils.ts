@@ -105,7 +105,7 @@ export function getImageUrl(path: string): string {
   }
 
   // Use CDN URL for uploads (OVH CDN hosts the actual files)
-  const cdnUrl = 'https://tota.boris-henne.fr';
+  const cdnUrl = '';
 
   // If path starts with /uploads, use CDN URL
   if (path.startsWith('/uploads/')) {

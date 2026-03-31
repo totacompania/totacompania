@@ -7,7 +7,7 @@ function getCdnUrl(path: string): string {
   if (!path) return '';
   if (path.startsWith('http://') || path.startsWith('https://')) return path;
   
-  const cdnUrl = 'https://tota.boris-henne.fr';
+  const cdnUrl = '';
   if (path.startsWith('/uploads/')) {
     return cdnUrl + path;
   }
