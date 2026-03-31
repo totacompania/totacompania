@@ -1,0 +1,9 @@
+totacompania.fr, www.totacompania.fr {
+    reverse_proxy totacompania:3101
+    encode gzip
+}
+
+# Fallback HTTP pour acces par IP
+:80 {
+    reverse_proxy totacompania:3101
+}
