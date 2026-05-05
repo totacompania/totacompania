@@ -47,20 +47,21 @@ export default function LaCompagniePage() {
   const [companyQuote, setCompanyQuote] = useState<CompanyQuote | null>(null);
   const [companyDescription, setCompanyDescription] = useState<CompanyDescription | null>(null);
   const [partners, setPartners] = useState<Partner[]>([]);
-  
+  const [boardPhoto, setBoardPhoto] = useState<string>('/uploads/2023/03/CA-2023-2048x1536.jpg');
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [equipeRes, artisteRes, conseilRes, quoteRes, descRes, partnersRes] = await Promise.all([
+        const [equipeRes, artisteRes, conseilRes, quoteRes, descRes, partnersRes, boardPhotoRes] = await Promise.all([
           fetch('/api/team?category=equipe'),
           fetch('/api/team?category=artiste'),
           fetch('/api/team?category=conseil'),
           fetch('/api/settings/company_quote'),
           fetch('/api/settings/company_description'),
           fetch('/api/partners'),
-          
+          fetch('/api/settings/board_photo'),
         ]);
 
         if (equipeRes.ok) setTeamMembers(await equipeRes.json());
@@ -69,6 +70,10 @@ export default function LaCompagniePage() {
         if (quoteRes.ok) setCompanyQuote(await quoteRes.json());
         if (descRes.ok) setCompanyDescription(await descRes.json());
         if (partnersRes.ok) setPartners(await partnersRes.json());
+        if (boardPhotoRes.ok) {
+          const data = await boardPhotoRes.json();
+          if (data?.value) setBoardPhoto(data.value);
+        }
 } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -341,7 +346,7 @@ export default function LaCompagniePage() {
                   viewport={{ once: true }}
                   className="relative aspect-[4/3] overflow-hidden shadow-lg"
                 >
-                  <Image src="/uploads/2023/03/CA-2023-2048x1536.jpg" alt="Conseil d Administration" fill className="object-cover" />
+                  <Image src={boardPhoto} alt="Conseil d Administration" fill className="object-cover" unoptimized />
                 </motion.div>
 
                 <div>
