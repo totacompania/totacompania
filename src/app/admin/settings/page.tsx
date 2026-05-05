@@ -171,7 +171,6 @@ export default function SettingsPage() {
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
     quote: true,
     description: true,
-    boardPhoto: true,
     stats: true,
     colors: true,
     preview: false,
@@ -196,7 +195,6 @@ export default function SettingsPage() {
     source: ''
   });
   const [theaterModalites, setTheaterModalites] = useState<Modalite[]>(DEFAULT_MODALITES);
-  const [boardPhoto, setBoardPhoto] = useState<string>('');
 
   const [savingStates, setSavingStates] = useState<Record<string, boolean>>({});
   const [eyedropperSupported, setEyedropperSupported] = useState(false);
@@ -216,14 +214,13 @@ export default function SettingsPage() {
 
     const loadAllData = async () => {
       try {
-        const [settingsRes, pdfRes, descRes, statsRes, quoteRes, modalitesRes, boardPhotoRes] = await Promise.all([
+        const [settingsRes, pdfRes, descRes, statsRes, quoteRes, modalitesRes] = await Promise.all([
           fetch('/api/settings'),
           fetch('/api/settings/programmation_pdf_url'),
           fetch('/api/settings/company_description'),
           fetch('/api/settings/company_stats'),
           fetch('/api/settings/company_quote'),
-          fetch('/api/settings/theater_modalites'),
-          fetch('/api/settings/board_photo')
+          fetch('/api/settings/theater_modalites')
         ]);
 
         if (settingsRes.ok) {
@@ -261,11 +258,6 @@ export default function SettingsPage() {
           if (data && Array.isArray(data) && data.length > 0) {
             setTheaterModalites(data);
           }
-        }
-
-        if (boardPhotoRes.ok) {
-          const data = await boardPhotoRes.json();
-          if (data?.value) setBoardPhoto(data.value);
         }
       } catch (error) {
         console.error('Error loading settings:', error);
@@ -538,39 +530,6 @@ export default function SettingsPage() {
                     onClick={() => saveData('description', '/api/settings/company_description', companyDescription)}
                     saving={savingStates.description || false}
                     label="Enregistrer les textes"
-                  />
-                </div>
-              </CollapsibleSection>
-
-              {/* Photo Conseil d'Administration */}
-              <CollapsibleSection
-                id="boardPhoto"
-                title="Photo Conseil d'Administration"
-                icon={Users}
-                badge="Page La Compagnie"
-                isExpanded={expandedSections.boardPhoto}
-                onToggle={toggleSection}
-              >
-                <div className="space-y-4">
-                  <p className="text-sm text-gray-500 bg-gray-50 p-3 rounded-lg">
-                    Image affichée dans la section &quot;Conseil d&apos;Administration&quot; de la page La Compagnie.
-                  </p>
-                  <MediaPicker
-                    label=""
-                    value={boardPhoto}
-                    onChange={(value) => setBoardPhoto(value as string)}
-                    accept="image"
-                    placeholder="Sélectionner la photo du Conseil d'Administration"
-                  />
-                  {boardPhoto && (
-                    <div className="relative aspect-[4/3] max-w-md overflow-hidden rounded-lg border">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={boardPhoto} alt="Aperçu Conseil d'Administration" className="w-full h-full object-cover" />
-                    </div>
-                  )}
-                  <SaveButton
-                    onClick={() => saveData('boardPhoto', '/api/settings/board_photo', boardPhoto)}
-                    saving={savingStates.boardPhoto || false}
                   />
                 </div>
               </CollapsibleSection>

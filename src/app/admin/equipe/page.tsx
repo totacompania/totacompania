@@ -6,9 +6,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
-  Plus, Trash2, Eye, EyeOff, Search, Users, Star, Award, X, Loader2, ImageIcon, Save
+  Plus, Trash2, Eye, EyeOff, Search, Users, Star, Award, X, Loader2, ImageIcon, Save, Camera
 } from 'lucide-react';
 import { AnimatedList } from '@/components/reactbits';
+import MediaPicker from '@/components/admin/MediaPicker';
 
 interface TeamRole {
   title: string;
@@ -56,8 +57,37 @@ export default function EquipeAdmin() {
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
   const [editingMember, setEditingMember] = useState<TeamMember | null>(null);
+  const [boardPhoto, setBoardPhoto] = useState<string>('');
+  const [savingBoardPhoto, setSavingBoardPhoto] = useState(false);
+  const [boardPhotoSaved, setBoardPhotoSaved] = useState(false);
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const LIMIT = 50;
+
+  useEffect(() => {
+    fetch('/api/settings/board_photo')
+      .then(r => r.ok ? r.json() : null)
+      .then(d => { if (d?.value) setBoardPhoto(d.value); })
+      .catch(() => {});
+  }, []);
+
+  const saveBoardPhoto = async () => {
+    setSavingBoardPhoto(true);
+    try {
+      const res = await fetch('/api/settings/board_photo', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ value: boardPhoto })
+      });
+      if (res.ok) {
+        setBoardPhotoSaved(true);
+        setTimeout(() => setBoardPhotoSaved(false), 2000);
+      }
+    } catch (error) {
+      console.error('Error saving board photo:', error);
+    } finally {
+      setSavingBoardPhoto(false);
+    }
+  };
 
   const fetchMembers = useCallback(async (pageNum: number, append = false) => {
     if (append) setLoadingMore(true);
@@ -233,6 +263,44 @@ export default function EquipeAdmin() {
           <Plus className="w-4 h-4" />
           Nouveau membre
         </Link>
+      </div>
+
+      <div className="bg-white rounded-xl shadow-sm border border-purple-100">
+        <div className="p-5">
+          <div className="flex items-start gap-3 mb-4">
+            <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center shrink-0">
+              <Camera className="w-5 h-5 text-purple-700" />
+            </div>
+            <div className="flex-1">
+              <h2 className="font-semibold text-gray-900">Photo Conseil d&apos;Administration</h2>
+              <p className="text-sm text-gray-500">Image affichée sur la page La Compagnie, section CA.</p>
+            </div>
+          </div>
+          <div className="space-y-3">
+            <MediaPicker
+              label=""
+              value={boardPhoto}
+              onChange={(value) => setBoardPhoto(value as string)}
+              accept="image"
+              placeholder="Sélectionner la photo du Conseil d'Administration"
+            />
+            {boardPhoto && (
+              <div className="relative aspect-[4/3] max-w-md overflow-hidden rounded-lg border">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={boardPhoto} alt="Aperçu Conseil d'Administration" className="w-full h-full object-cover" />
+              </div>
+            )}
+            <button
+              type="button"
+              onClick={saveBoardPhoto}
+              disabled={savingBoardPhoto}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 transition-colors"
+            >
+              {savingBoardPhoto ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+              {boardPhotoSaved ? 'Enregistré ✓' : 'Enregistrer'}
+            </button>
+          </div>
+        </div>
       </div>
 
       <div className="bg-white rounded-xl shadow-sm">
