@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { Plus, Trash2, Eye, EyeOff, Calendar, MapPin, Search, Loader2, X, Save, ImageIcon, ExternalLink, Ticket } from 'lucide-react';
+import { Plus, Trash2, Eye, EyeOff, Calendar, MapPin, Search, Loader2, X, Save, ImageIcon, ExternalLink, Ticket, FileText, Upload } from 'lucide-react';
 import Image from 'next/image';
 import MediaPicker from '@/components/admin/MediaPicker';
 import { AnimatedList } from '@/components/reactbits';
@@ -26,6 +26,7 @@ interface Event {
   image?: string;
   ticketUrl?: string;
   externalUrl?: string;
+  documents?: { title: string; file: string }[];
   published: boolean;
 }
 
@@ -295,9 +296,47 @@ function EditEventModal({
     image: event.image || '',
     ticketUrl: event.ticketUrl || '',
     externalUrl: event.externalUrl || '',
+    documents: (event.documents || []) as { title: string; file: string }[],
     published: event.published ?? false,
   });
   const [saving, setSaving] = useState(false);
+  const [uploadingDoc, setUploadingDoc] = useState<number | null>(null);
+
+  const handleAddDocument = () => {
+    setForm({ ...form, documents: [...form.documents, { title: '', file: '' }] });
+  };
+
+  const handleRemoveDocument = (idx: number) => {
+    setForm({ ...form, documents: form.documents.filter((_, i) => i !== idx) });
+  };
+
+  const handleDocumentTitleChange = (idx: number, value: string) => {
+    const next = [...form.documents];
+    next[idx] = { ...next[idx], title: value };
+    setForm({ ...form, documents: next });
+  };
+
+  const handleDocumentFileUpload = async (idx: number, file: File) => {
+    setUploadingDoc(idx);
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await fetch('/api/admin/media/upload', { method: 'POST', body: fd });
+      if (res.ok) {
+        const media = await res.json();
+        const next = [...form.documents];
+        next[idx] = {
+          title: next[idx].title || media.originalName?.replace(/\.[^/.]+$/, '') || 'Document',
+          file: media.path || media.url || '',
+        };
+        setForm({ ...form, documents: next });
+      }
+    } catch (err) {
+      console.error('Upload doc error:', err);
+    } finally {
+      setUploadingDoc(null);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -570,6 +609,79 @@ function EditEventModal({
                   placeholder="Selectionner une image"
                 />
               </div>
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Documents PDF
+                </label>
+                <button
+                  type="button"
+                  onClick={handleAddDocument}
+                  className="flex items-center gap-1 text-sm text-primary hover:text-primary-dark"
+                >
+                  <Plus className="w-4 h-4" />
+                  Ajouter un document
+                </button>
+              </div>
+              {form.documents.length === 0 ? (
+                <p className="text-sm text-gray-500 italic">Aucun document attache.</p>
+              ) : (
+                <div className="space-y-2">
+                  {form.documents.map((doc, idx) => (
+                    <div key={idx} className="flex items-center gap-2 p-2 border border-gray-200 rounded-lg">
+                      <FileText className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                      <input
+                        type="text"
+                        value={doc.title}
+                        onChange={(e) => handleDocumentTitleChange(idx, e.target.value)}
+                        placeholder="Titre (ex: Programme, Dossier presse...)"
+                        className="flex-1 min-w-0 px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-primary"
+                      />
+                      {doc.file ? (
+                        <a
+                          href={doc.file}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs text-blue-600 underline truncate max-w-[120px]"
+                          title={doc.file}
+                        >
+                          {doc.file.split('/').pop()}
+                        </a>
+                      ) : (
+                        <span className="text-xs text-gray-400">Aucun fichier</span>
+                      )}
+                      <label className="cursor-pointer flex items-center gap-1 text-xs px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded">
+                        {uploadingDoc === idx ? (
+                          <Loader2 className="w-3 h-3 animate-spin" />
+                        ) : (
+                          <Upload className="w-3 h-3" />
+                        )}
+                        {doc.file ? 'Remplacer' : 'Choisir'}
+                        <input
+                          type="file"
+                          accept="application/pdf"
+                          className="hidden"
+                          onChange={(e) => {
+                            const f = e.target.files?.[0];
+                            if (f) handleDocumentFileUpload(idx, f);
+                            e.target.value = '';
+                          }}
+                        />
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveDocument(idx)}
+                        className="p-1 text-red-500 hover:bg-red-50 rounded"
+                        aria-label="Supprimer"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="flex gap-3 pt-4 border-t">

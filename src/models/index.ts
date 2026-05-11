@@ -94,10 +94,16 @@ export interface IEvent extends Document {
   externalUrl?: string;
   image?: string;
   spectacleId?: mongoose.Types.ObjectId;
+  documents?: { title: string; file: string }[];
   published: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
+
+const EventDocumentSchema = new Schema<{ title: string; file: string }>({
+  title: { type: String, required: true },
+  file: { type: String, required: true },
+}, { _id: false });
 
 const EventSchema = new Schema<IEvent>({
   title: { type: String, required: true },
@@ -116,6 +122,7 @@ const EventSchema = new Schema<IEvent>({
   externalUrl: String,
   image: String,
   spectacleId: { type: Schema.Types.ObjectId, ref: 'Spectacle' },
+  documents: { type: [EventDocumentSchema], default: [] },
   published: { type: Boolean, default: true },
 }, { timestamps: true });
 

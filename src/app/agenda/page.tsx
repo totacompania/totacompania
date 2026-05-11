@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Navigation from '@/components/layout/Navigation';
 import Footer from '@/components/layout/Footer';
-import { Calendar, MapPin, Clock, Ticket, ArrowRight, X, ExternalLink } from 'lucide-react';
+import { Calendar, MapPin, Clock, Ticket, ArrowRight, X, ExternalLink, FileText, Download } from 'lucide-react';
 
 interface Event {
   id: number;
@@ -21,6 +21,7 @@ interface Event {
   endTime: string;
   ticketUrl: string;
   externalUrl?: string;
+  documents?: { title: string; file: string }[];
   price: string;
   spectacleId: number;
   spectacleTitle: string;
@@ -404,6 +405,29 @@ export default function AgendaPage() {
                     <span className="inline-block px-4 py-2 bg-secondary/30 rounded-lg font-semibold text-theater-brown">
                       {selectedEvent.price}
                     </span>
+                  </div>
+                )}
+
+                {/* Documents PDF */}
+                {selectedEvent.documents && selectedEvent.documents.length > 0 && (
+                  <div className="mt-6">
+                    <h3 className="font-semibold text-theater-brown mb-2">Documents</h3>
+                    <ul className="space-y-2">
+                      {selectedEvent.documents.map((doc, idx) => (
+                        <li key={idx}>
+                          <a
+                            href={doc.file}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg text-theater-brown transition-colors"
+                          >
+                            <FileText className="w-4 h-4 text-primary" />
+                            <span>{doc.title || 'Document'}</span>
+                            <Download className="w-3.5 h-3.5 text-gray-400" />
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 )}
 

@@ -80,11 +80,19 @@ export async function GET(request: NextRequest) {
         imageUrl = getCdnUrl(imageUrl);
       }
 
+      const documents = Array.isArray(event.documents)
+        ? event.documents.map((d: any) => ({
+            title: d.title,
+            file: d.file ? getCdnUrl(d.file) : '',
+          }))
+        : [];
+
       return {
         ...event,
         date: event.date?.toISOString ? event.date.toISOString() : event.date,
         endDate: event.endDate?.toISOString ? event.endDate.toISOString() : event.endDate,
         image: imageUrl,
+        documents,
       };
     });
 

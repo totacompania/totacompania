@@ -69,6 +69,7 @@ export async function POST(request: NextRequest) {
       type: body.type || 'spectacle',
       image: body.image,
       spectacleId: body.spectacleId,
+      documents: Array.isArray(body.documents) ? body.documents : [],
       published: body.published !== false,
     });
 

@@ -48,6 +48,7 @@ export async function PUT(
         type: body.type,
         image: body.image,
         spectacleId: body.spectacleId,
+        documents: Array.isArray(body.documents) ? body.documents : [],
         published: body.published,
       },
       { new: true }
