@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { getImageUrl } from '@/lib/utils';
 import Navigation from '@/components/layout/Navigation';
 import Footer from '@/components/layout/Footer';
 import ZigzagSeparator from '@/components/ui/ZigzagSeparator';
@@ -346,7 +347,7 @@ export default function LaCompagniePage() {
                   viewport={{ once: true }}
                   className="relative aspect-[4/3] overflow-hidden shadow-lg"
                 >
-                  <Image src={boardPhoto} alt="Conseil d Administration" fill className="object-cover" unoptimized />
+                  <Image src={getImageUrl(boardPhoto)} alt="Conseil d Administration" fill className="object-cover" unoptimized />
                 </motion.div>
 
                 <div>

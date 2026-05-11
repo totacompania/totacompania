@@ -287,7 +287,7 @@ export default function EquipeAdmin() {
             {boardPhoto && (
               <div className="relative aspect-[4/3] max-w-md overflow-hidden rounded-lg border">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={boardPhoto} alt="Aperçu Conseil d'Administration" className="w-full h-full object-cover" />
+                <img src={getImageUrl(boardPhoto)} alt="Aperçu Conseil d'Administration" className="w-full h-full object-cover" />
               </div>
             )}
             <button
