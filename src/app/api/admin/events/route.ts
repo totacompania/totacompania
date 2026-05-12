@@ -2,6 +2,16 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import { Event } from '@/models';
 
+function formatEventForAdmin(event: any) {
+  const doc = typeof event.toObject === 'function' ? event.toObject() : event;
+  return {
+    ...doc,
+    id: doc._id?.toString(),
+    date: doc.date instanceof Date ? doc.date.toISOString().split('T')[0] : doc.date,
+    endDate: doc.endDate instanceof Date ? doc.endDate.toISOString().split('T')[0] : doc.endDate,
+  };
+}
+
 export async function GET(request: NextRequest) {
   try {
     await connectDB();
@@ -22,16 +32,7 @@ export async function GET(request: NextRequest) {
       .limit(limit)
       .populate('spectacleId');
 
-    // Transformer les donnees pour l'admin avec les bons champs
-    const eventsForAdmin = result.map((event: any) => {
-      const doc = event.toObject();
-      return {
-        ...doc,
-        id: doc._id.toString(),
-        date: doc.date?.toISOString().split('T')[0] || '',
-        endDate: doc.endDate?.toISOString().split('T')[0],
-      };
-    });
+    const eventsForAdmin = result.map(formatEventForAdmin);
 
     return NextResponse.json({
       data: eventsForAdmin,
@@ -74,7 +75,7 @@ export async function POST(request: NextRequest) {
     });
 
     await event.save();
-    return NextResponse.json(event, { status: 201 });
+    return NextResponse.json(formatEventForAdmin(event), { status: 201 });
   } catch (error) {
     console.error('Error creating event:', error);
     return NextResponse.json({ error: 'Failed to create event' }, { status: 500 });

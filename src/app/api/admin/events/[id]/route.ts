@@ -2,6 +2,16 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import { Event } from '@/models';
 
+function formatEventForAdmin(event: any) {
+  const doc = typeof event.toObject === 'function' ? event.toObject() : event;
+  return {
+    ...doc,
+    id: doc._id?.toString(),
+    date: doc.date instanceof Date ? doc.date.toISOString().split('T')[0] : doc.date,
+    endDate: doc.endDate instanceof Date ? doc.endDate.toISOString().split('T')[0] : doc.endDate,
+  };
+}
+
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -14,7 +24,7 @@ export async function GET(
       return NextResponse.json({ error: 'Event not found' }, { status: 404 });
     }
 
-    return NextResponse.json(event);
+    return NextResponse.json(formatEventForAdmin(event));
   } catch (error) {
     console.error('Error fetching event:', error);
     return NextResponse.json({ error: 'Failed to fetch event' }, { status: 500 });
@@ -58,7 +68,7 @@ export async function PUT(
       return NextResponse.json({ error: 'Event not found' }, { status: 404 });
     }
 
-    return NextResponse.json(event);
+    return NextResponse.json(formatEventForAdmin(event));
   } catch (error) {
     console.error('Error updating event:', error);
     return NextResponse.json({ error: 'Failed to update event' }, { status: 500 });
