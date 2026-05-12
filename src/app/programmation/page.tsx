@@ -8,7 +8,7 @@ import Navigation from '@/components/layout/Navigation';
 import Footer from '@/components/layout/Footer';
 import ZigzagSeparator from '@/components/ui/ZigzagSeparator';
 import { AuroraHero } from '@/components/ui/AuroraBackground';
-import { Calendar, MapPin, Clock, Ticket, Phone, Mail, ArrowRight, Sparkles, Home, GraduationCap, Filter, Loader2, X, ExternalLink } from 'lucide-react';
+import { Calendar, MapPin, Clock, Ticket, Phone, Mail, ArrowRight, Sparkles, Home, GraduationCap, Filter, Loader2, X, ExternalLink, FileText, Download } from 'lucide-react';
 
 interface ContactInfo {
   phone: string;
@@ -40,6 +40,7 @@ interface EventData {
   image?: string;
   ticketUrl?: string;
   externalUrl?: string;
+  documents?: { title: string; file: string }[];
   published: boolean;
 }
 
@@ -529,6 +530,29 @@ export default function ProgrammationPage() {
                       <Ticket className="w-4 h-4 text-[#844cfc]" />
                       {selectedEvent.price}
                     </span>
+                  </div>
+                )}
+
+                {/* Documents PDF */}
+                {selectedEvent.documents && selectedEvent.documents.length > 0 && (
+                  <div className="mt-6">
+                    <h3 className="font-semibold text-[#0a0a0f] mb-2">Documents</h3>
+                    <ul className="space-y-2">
+                      {selectedEvent.documents.map((doc, idx) => (
+                        <li key={idx}>
+                          <a
+                            href={doc.file}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg text-[#0a0a0f] transition-colors"
+                          >
+                            <FileText className="w-4 h-4 text-[#844cfc]" />
+                            <span>{doc.title || 'Document'}</span>
+                            <Download className="w-3.5 h-3.5 text-gray-400" />
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 )}
 
