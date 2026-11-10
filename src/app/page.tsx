@@ -36,6 +36,7 @@ interface Event {
   _id: string;
   title: string;
   date: string;
+  endDate?: string;
   time?: string;
   location: string;
   spectacleId?: string;
@@ -68,6 +69,7 @@ export default function HomePage() {
   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [bannerImage, setBannerImage] = useState<string>('');
   const [companyStats, setCompanyStats] = useState({
     yearsExperience: '30+',
     showsOnTour: '5',
@@ -78,11 +80,12 @@ export default function HomePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [specRes, eventsRes, galleryRes, statsRes] = await Promise.all([
+        const [specRes, eventsRes, galleryRes, statsRes, bannerRes] = await Promise.all([
           fetch('/api/spectacles?limit=3'),
           fetch('/api/events?limit=3&upcoming=true'),
           fetch('/api/gallery?limit=10'),
-          fetch('/api/settings/company_stats')
+          fetch('/api/settings/company_stats'),
+          fetch('/api/settings/homepage_banner')
         ]);
 
         if (specRes.ok) {
@@ -103,6 +106,11 @@ export default function HomePage() {
         if (statsRes.ok) {
           const statsData = await statsRes.json();
           if (statsData) setCompanyStats(statsData);
+        }
+
+        if (bannerRes.ok) {
+          const bannerData = await bannerRes.json();
+          if (bannerData?.value) setBannerImage(bannerData.value);
         }
       } catch (error) {
         console.error('Error fetching homepage data:', error);
@@ -212,6 +220,25 @@ export default function HomePage() {
         {/* Wave: Dark -> Light violet */}
         <ZigzagSeparator topColor="var(--brand-violet)" bottomColor="#ffffff" />
 
+        {/* Bandeau Image (si configuré) */}
+        {bannerImage && (
+          <section className="relative w-full h-[250px] md:h-[300px] overflow-hidden" style={{ backgroundColor: '#ffffff' }}>
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="relative w-full h-full"
+            >
+              <Image
+                src={getImageUrl(bannerImage)}
+                alt="Bandeau"
+                fill
+                className="object-cover"
+              />
+            </motion.div>
+          </section>
+        )}
+
         {/* Section Prochaines Dates */}
         <section className="py-16 md:py-24 relative" style={{ backgroundColor: '#ffffff' }}>
           <div className="container-custom">
@@ -259,6 +286,9 @@ export default function HomePage() {
                     <Link href="/programmation" className="flex flex-col md:flex-row md:items-center gap-4">
                       <div className="flex-shrink-0 md:w-44">
                         <div className="text-lg font-bold text-[#844cfc] capitalize">{formatEventDate(event.date)}</div>
+                        {event.endDate && (
+                          <div className="text-sm text-gray-600">au {formatEventDate(event.endDate)}</div>
+                        )}
                         {event.time && <div className="text-sm text-gray-500">{event.time}</div>}
                       </div>
                       <div className="hidden md:block w-px h-12 bg-[#844cfc]/30" />
