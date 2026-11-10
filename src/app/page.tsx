@@ -40,6 +40,7 @@ interface Event {
   time?: string;
   location: string;
   spectacleId?: string;
+  image?: string;
 }
 
 interface GalleryImage {
@@ -284,6 +285,16 @@ export default function HomePage() {
                     className="card-violet group hover:translate-x-2 transition-transform cursor-pointer"
                   >
                     <Link href="/programmation" className="flex flex-col md:flex-row md:items-center gap-4">
+                      {event.image && (
+                        <div className="relative w-full md:w-32 h-32 flex-shrink-0 overflow-hidden">
+                          <Image
+                            src={getImageUrl(event.image)}
+                            alt={event.title}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                      )}
                       <div className="flex-shrink-0 md:w-44">
                         <div className="text-lg font-bold text-[#844cfc] capitalize">{formatEventDate(event.date)}</div>
                         {event.endDate && (
