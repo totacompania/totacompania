@@ -293,7 +293,7 @@ export default function HomePage() {
                       </div>
                       <div className="hidden md:block w-px h-12 bg-[#844cfc]/30" />
                       <div className="flex-1">
-                        <h3 className="font-title text-lg font-bold group-hover:text-[#844cfc] transition-colors">{event.title}</h3>
+                        <h3 className="font-title text-xl font-bold group-hover:text-[#844cfc] transition-colors">{event.title}</h3>
                         <div className="flex items-center gap-2 text-gray-500 text-sm mt-1">
                           <MapPin className="w-4 h-4" />
                           {event.location}
